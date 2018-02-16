@@ -1,11 +1,17 @@
 package modele;
 
+import java.util.ArrayList;
+
+import view.Vue;
+
 
 public class EtatOthello extends Etat{
 	private int taille;
 	private Pion[][] tab;
+    private ArrayList<Vue> vues;
 	
 	public EtatOthello() {
+	    this.vues=new ArrayList<>(1);
 		taille = 8;
 		tab = new Pion[taille][taille];
 		int total = taille * taille;
@@ -104,9 +110,14 @@ public class EtatOthello extends Etat{
 		return true;
 	}
 	
+	public int getTaille(){
+		return taille;
+	}
+	
 	//Affichage plateau du jeu sur terminal
 	public String toString(){
 		StringBuilder spb = new StringBuilder();
+		encadrementJeu(spb);
 		for(int x = 0 ; x < taille ; x++){
 			spb.append("|");
 			for(int y = 0 ; y < taille ; y++) {
@@ -115,6 +126,25 @@ public class EtatOthello extends Etat{
 			spb.append("||");
 			spb.append("\n");
 		}
+		encadrementJeu(spb);
 		return spb.toString();
+	}
+	
+	public StringBuilder encadrementJeu(StringBuilder spb){
+		for(int t = 0; t < (taille*2)+3 ; t++){
+			spb.append("|");
+		}
+		spb.append("\n");
+		return spb;
+	}
+
+	@Override
+	public ArrayList<Etat> successeurs(Joueur j) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	public void ajouterVue(Vue v){
+		vues.add(v);
 	}
 }

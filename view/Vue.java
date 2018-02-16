@@ -1,7 +1,7 @@
 package view;
-import javax.swing.JPanel;
 
 
-public class Vue extends JPanel{
+public interface Vue{
 	// Vue graphique géré ici
+	public void maj();
 }
