@@ -7,35 +7,65 @@ import representationCo.view.Vue;
 public class PlateauDeJeu {
 
 	private int taillePlateau;
+	private Joueur[] tableauJoueurs;
+	private int tourDuJoueurNum;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
     
     public PlateauDeJeu() {
     		etat = new EtatOthello(8);
     		taillePlateau = 8;
+    		tableauJoueurs = new Joueur[2];
+    		tableauJoueurs[0] = null;
+    		tableauJoueurs[1] = null;
+    		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
     }
     
     public PlateauDeJeu(int taille) {
     		taillePlateau = taille;
     		etat = new EtatOthello(taille);
+    		tableauJoueurs = new Joueur[2];
+    		tableauJoueurs[0] = null;
+    		tableauJoueurs[1] = null;
+    		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
     }
     
     public void ajouterVue(Vue vue) {
     		vues.add(vue);
+    } 
+    
+    public void ajouterJoueur(Joueur j) {
+    		if(tableauJoueurs[0] == null) {
+    			tableauJoueurs[0] = j;
+    		}
+    		else {
+        		tableauJoueurs[1] = j;
+    		}
     }
     
+    
+    public char getCouleur(int i, int j) {
+    		return etat.getCouleur(i, j);
+    }
     
     /*
      * retourne vrai si le joueur peur jouer
      */
-    public boolean jouer(int i, int j, char couleur) {
+    public void jouer(int i, int j) {
     		if(etat.getCouleur(i, j) == 'V') {
-    			etat.setCouleur(i, j, couleur);
-    			return true;
+    			if(tourDuJoueurNum == 0) {
+        			etat.setCouleur(i, j, 'B');
+    			}
+    			else{
+        			etat.setCouleur(i, j, 'N');
+    			}
+    			tourDuJoueurNum++;
+    			tourDuJoueurNum = tourDuJoueurNum % 2;
+			maj();
+			System.out.println(this.toString());
     		}
-    		return false;
     }
     
     public void nouvellePartie(int taille) {
@@ -58,6 +88,14 @@ public class PlateauDeJeu {
 			}
 		}
 	    	return true;
+    }
+    
+    
+    public boolean isEmpty(int i, int j){
+    		if( etat.getCouleur(i, j) == 'V' ) {
+    			return true;
+    		}
+    		return false;
     }
     
     
@@ -89,5 +127,11 @@ public class PlateauDeJeu {
 		return spb;
 	}
 
+  	
+  	public void maj(){
+  		for(Vue v : vues){
+  			v.maj();
+  		}
+  	}
     
 }

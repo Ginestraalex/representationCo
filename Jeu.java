@@ -5,6 +5,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import representationCo.view.Vue;
 import representationCo.view.VueJeu;
 import representationCo.modele.PlateauDeJeu;
 
@@ -21,12 +22,18 @@ public class Jeu extends JFrame{
 		this.setLocationRelativeTo(null);
 		
 		modele = new PlateauDeJeu();
-		VueJeu lanceur = new VueJeu(modele);
+		VueJeu vuePlateau = new VueJeu(modele);
 		
-		this.getContentPane().add(lanceur);
-		this.add(lanceur,BorderLayout.CENTER);
+		modele.ajouterVue(vuePlateau);
+		
+		this.getContentPane().add(vuePlateau);
+		this.add(vuePlateau,BorderLayout.CENTER);
 		this.pack();
 		this.setVisible(true);
+		modele.jouer(3, 3);
+		modele.jouer(4, 3);
+		modele.jouer(3, 4);
+		modele.jouer(4, 4);
 	}
 	
 	public String toString(){

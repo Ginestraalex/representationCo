@@ -1,13 +1,21 @@
 package representationCo.modele;
 
 public abstract class Joueur {
-	private int nbGagnés;
+	
+	private String nomJoueur;
+	private int nbGagnees;
 	
 	public Joueur(){
-		nbGagnés = 0;
+		nbGagnees = 0;
+		nomJoueur = "No Name";
+	}
+	
+	public Joueur(String nom) {
+		nbGagnees = 0;
+		nomJoueur = nom;
 	}
 	
 	public void setGagne(){
-		nbGagnés++;
+		nbGagnees++;
 	}
 }
