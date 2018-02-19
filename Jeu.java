@@ -9,15 +9,19 @@ import modele.Pion;
 
 
 public class Jeu extends JFrame{
+	
 	private EtatOthello modele;
 	
 	public Jeu(){
+		/* frame settings */
 		super("Reversi");
 		setPreferredSize(new Dimension(1000,400));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
+		
 		modele = new EtatOthello();
 		VueJeu lanceur = new VueJeu(modele);
+		
 		this.getContentPane().add(lanceur);
 		this.add(lanceur,BorderLayout.CENTER);
 		this.pack();

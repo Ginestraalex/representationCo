@@ -4,7 +4,7 @@ public class Pion {
 	private String couleur;
 	
 	public Pion(String c){
-		couleur=c;
+		couleur = c;
 	}
 	
 	public String getCouleur() {

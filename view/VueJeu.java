@@ -18,13 +18,13 @@ public class VueJeu extends JPanel implements Vue {
 	
 	public VueJeu(EtatOthello modele) {
 		super();
-		this.mod=modele;
-		this.buttons=new JButton[mod.getTaille()][mod.getTaille()];
-		GridLayout grille=new GridLayout(mod.getTaille(),mod.getTaille());
+		this.mod = modele;
+		this.buttons = new JButton[mod.getTaille()][mod.getTaille()];
+		GridLayout grille = new GridLayout(mod.getTaille(),mod.getTaille());
 		this.setLayout(grille);
 	    init();
-	    for (int x = 0; x < mod.getTaille(); x++) {
-	        for (int y = 0; y < mod.getTaille(); y++) {
+	    for (int x = 0 ; x < mod.getTaille() ; x++) {
+	        for (int y = 0 ; y < mod.getTaille() ; y++) {
 	        	this.add(buttons[x][y]);
 	        }
 	    }
@@ -32,8 +32,8 @@ public class VueJeu extends JPanel implements Vue {
 	}
 
 	public void init() {
-	    for (int x = 0; x < mod.getTaille(); x++) {
-	        for (int y = 0; y < mod.getTaille(); y++) {
+	    for (int x = 0 ; x < mod.getTaille() ; x++) {
+	        for (int y = 0 ; y < mod.getTaille(); y++) {
 	            buttons[x][y] = new JButton();
 	            buttons[x][y].setPreferredSize(new Dimension(30, 30));
 	        }
@@ -43,7 +43,6 @@ public class VueJeu extends JPanel implements Vue {
 	@Override
 	public void maj() {
 		// TODO Auto-generated method stub
-		
 	}
 
 }
