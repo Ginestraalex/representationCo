@@ -5,10 +5,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import representationCo.ecouteur.EcouteurBouton;
+import representationCo.image.PictureFactory;
 import representationCo.modele.PlateauDeJeu;
 import representationCo.view.Vue;
 
@@ -36,7 +38,7 @@ public class VueJeu extends JPanel implements Vue {
 	    for (int x = 0 ; x < modele.getTaille() ; x++) {
 	        for (int y = 0 ; y < modele.getTaille(); y++) {
 	            buttons[x][y] = new JButton();
-	            buttons[x][y].setPreferredSize(new Dimension(30, 30));
+	            buttons[x][y].setPreferredSize(new Dimension(90, 90));
 	        }
 	    }
 	}
@@ -49,17 +51,14 @@ public class VueJeu extends JPanel implements Vue {
 				if(!modele.isEmpty(i, j)) {
 					buttons[i][j].setEnabled(false);
 					if(modele.getCouleur(i, j) == 'B'){
-						System.out.println("l52 dans VueJeu, il faut ajouter les images");
+						buttons[i][j].setIcon(PictureFactory.pionBlanc);
 					}
 					else{
-						System.out.println("l52 dans VueJeu, il faut ajouter les images");
-
+						buttons[i][j].setIcon(PictureFactory.pionNoir);
 					}
 				}
-				
 			}
 		}
-
 	}
 
 }
