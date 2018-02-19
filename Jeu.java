@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 import representationCo.view.VueJeu;
-import representationCo.modele.EtatOthello;
 import representationCo.modele.PlateauDeJeu;
 
 

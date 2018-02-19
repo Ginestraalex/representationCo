@@ -5,9 +5,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
-import representationCo.modele.EtatOthello;
 import representationCo.modele.PlateauDeJeu;
 import representationCo.view.Vue;
 
@@ -24,7 +22,7 @@ public class VueJeu extends JPanel implements Vue {
 	    init();
 	    for (int x = 0 ; x < mod.getTaille() ; x++) {
 	        for (int y = 0 ; y < mod.getTaille() ; y++) {
-	        	this.add(buttons[x][y]);
+        			this.add(buttons[x][y]);
 	        }
 	    }
 		//mod.ajouterVue(this); probleme avec cette ligne

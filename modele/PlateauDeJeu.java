@@ -7,26 +7,18 @@ import representationCo.view.Vue;
 public class PlateauDeJeu {
 
 	private int taillePlateau;
-	private Pion[][] tableauJeu;
+	private EtatOthello etat;
     private ArrayList<Vue> vues;
     
     public PlateauDeJeu() {
+    		etat = new EtatOthello(8);
     		taillePlateau = 8;
-    		for(int i = 0 ; i < taillePlateau ; i++) {
-    			for(int j = 0 ; j < taillePlateau ; j++) {
-    				tableauJeu[i][j] = new Pion();
-    			}
-    		}
     		vues = new ArrayList<Vue>();
     }
     
     public PlateauDeJeu(int taille) {
-    	taillePlateau = taille;
-    		for(int i = 0 ; i < taille ; i++) {
-    			for(int j = 0 ; j < taille ; j++) {
-    				tableauJeu[i][j] = new Pion();
-    			}
-    		}
+    		taillePlateau = taille;
+    		etat = new EtatOthello(taille);
     		vues = new ArrayList<Vue>();
     }
     
@@ -39,8 +31,8 @@ public class PlateauDeJeu {
      * retourne vrai si le joueur peur jouer
      */
     public boolean jouer(int i, int j, char couleur) {
-    		if(tableauJeu[i][j].getCouleur() == 'V') {
-    			tableauJeu[i][j].setCouleur(couleur);
+    		if(etat.getCouleur(i, j) == 'V') {
+    			etat.setCouleur(i, j, couleur);
     			return true;
     		}
     		return false;
@@ -48,11 +40,7 @@ public class PlateauDeJeu {
     
     public void nouvellePartie(int taille) {
 	    	taillePlateau = taille;
-	    	for(int i = 0 ; i < taillePlateau ; i++) {
-				for(int j = 0 ; j < taillePlateau ; j++) {
-					tableauJeu[i][j] = new Pion();
-				}
-			}
+	    	etat = new EtatOthello(taille);
     }
     
     public boolean isEqual(Pion[][] tableauATester) {
@@ -63,7 +51,7 @@ public class PlateauDeJeu {
 	    	else{
 			for(int i = 0 ; i < taille ; i++){
 				for(int j = 0 ; j < taille ; j++) {
-					if(tableauATester[i][j] != tableauJeu[i][j]){
+					if(tableauATester[i][j].getCouleur() != etat.getCouleur(i, j)){
 						return false;
 					}
 				}
@@ -84,7 +72,7 @@ public class PlateauDeJeu {
   		for(int x = 0 ; x < taillePlateau ; x++){
   			spb.append("|");
   			for(int y = 0 ; y < taillePlateau ; y++) {
-  				spb.append("|"+ tableauJeu[x][y].getCouleur());
+  				spb.append("|"+ etat.getCouleur(x, y));
   			}
   			spb.append("||");
   			spb.append("\n");
