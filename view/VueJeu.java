@@ -50,7 +50,6 @@ public class VueJeu extends JPanel implements Vue {
 		for(int i = 0 ; i < buttons.length ; i++){
 			for(int j = 0 ; j < buttons.length ; j++) {
 				if(!modele.isEmpty(i, j)) {
-					buttons[i][j].setEnabled(false);
 					if(modele.getCouleur(i, j) == 'B'){
 						buttons[i][j].setIcon(PictureFactory.pionBlanc);
 					}
