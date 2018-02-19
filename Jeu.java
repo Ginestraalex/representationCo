@@ -1,11 +1,12 @@
+package representationCo;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import view.VueJeu;
-import modele.EtatOthello;
-import modele.Pion;
+import representationCo.view.VueJeu;
+import representationCo.modele.EtatOthello;
 
 
 public class Jeu extends JFrame{

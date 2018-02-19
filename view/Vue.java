@@ -1,4 +1,4 @@
-package view;
+package representationCo.view;
 
 
 public interface Vue{

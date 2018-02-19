@@ -1,4 +1,4 @@
-package modele;
+package representationCo.modele;
 
 public abstract class Joueur {
 	private int nbGagnés;

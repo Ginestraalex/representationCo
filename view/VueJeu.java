@@ -1,4 +1,4 @@
-package view;
+package representationCo.view;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -7,10 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-import modele.EtatOthello;
-
-
-import view.Vue;
+import representationCo.modele.EtatOthello;
+import representationCo.view.Vue;
 
 public class VueJeu extends JPanel implements Vue {
 	private EtatOthello mod;

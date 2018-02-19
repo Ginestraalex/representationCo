@@ -1,4 +1,4 @@
-package modele;
+package representationCo.modele;
 
 
 public class JoueurOthello extends Joueur{

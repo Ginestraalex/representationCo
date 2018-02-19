@@ -1,8 +1,8 @@
-package modele;
+package representationCo.modele;
 
 import java.util.ArrayList;
 
-import view.Vue;
+import representationCo.view.Vue;
 
 
 public class EtatOthello extends Etat{
