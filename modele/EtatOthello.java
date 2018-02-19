@@ -18,7 +18,7 @@ public class EtatOthello extends Etat{
 		//initialisation
 		for(int i = 0 ; i < taille ; i++){
 			for(int j = 0 ; j < taille ; j++)
-			tab[i][j] = new Pion(" ");
+			tab[i][j] = new Pion(' ');
 		}
 		debutPartie();
 	}
@@ -32,7 +32,7 @@ public class EtatOthello extends Etat{
 			//initialisation
 			for(int i = 0 ; i < taille ; i++){
 				for(int j = 0 ; j < taille ; j++) {
-					tab[i][j] = new Pion(" ");
+					tab[i][j] = new Pion(' ');
 				}
 			}
 			debutPartie();
@@ -44,10 +44,10 @@ public class EtatOthello extends Etat{
 	public void debutPartie() {
 		int l = taille / 2;
 		int c = (taille / 2) - 1;
-		tab[l][l] = new Pion("B");
-		tab[c][c] = new Pion("B");
-		tab[l][c] = new Pion("N");
-		tab[c][l] = new Pion("N");
+		tab[l][l] = new Pion('B');
+		tab[c][c] = new Pion('B');
+		tab[l][c] = new Pion('N');
+		tab[c][l] = new Pion('N');
 	}
 	
 	public void setPion(int l, int c, Pion val){

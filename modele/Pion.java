@@ -1,13 +1,13 @@
 package representationCo.modele;
 
 public class Pion {
-	private String couleur;
+	private char couleur;
 	
-	public Pion(String c){
+	public Pion(char c){
 		couleur = c;
 	}
 	
-	public String getCouleur() {
+	public char getCouleur() {
 		return couleur;
 	}
 }
