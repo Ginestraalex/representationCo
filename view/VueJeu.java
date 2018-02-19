@@ -31,6 +31,7 @@ public class VueJeu extends JPanel implements Vue {
         			this.buttons[x][y].addActionListener(new EcouteurBouton(x, y, mod).getActionListener());
 	        }
 	    }
+	    maj();
 		//mod.ajouterVue(this); probleme avec cette ligne
 	}
 
