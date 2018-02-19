@@ -8,16 +8,17 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 import representationCo.modele.EtatOthello;
+import representationCo.modele.PlateauDeJeu;
 import representationCo.view.Vue;
 
 public class VueJeu extends JPanel implements Vue {
-	private EtatOthello mod;
+	private PlateauDeJeu modele;
 	public JButton[][] buttons;
 	
-	public VueJeu(EtatOthello modele) {
+	public VueJeu(PlateauDeJeu mod) {
 		super();
-		this.mod = modele;
-		this.buttons = new JButton[mod.getTaille()][mod.getTaille()];
+		modele = mod;
+		this.buttons = new JButton[modele.getTaille()][modele.getTaille()];
 		GridLayout grille = new GridLayout(mod.getTaille(),mod.getTaille());
 		this.setLayout(grille);
 	    init();
@@ -30,8 +31,8 @@ public class VueJeu extends JPanel implements Vue {
 	}
 
 	public void init() {
-	    for (int x = 0 ; x < mod.getTaille() ; x++) {
-	        for (int y = 0 ; y < mod.getTaille(); y++) {
+	    for (int x = 0 ; x < modele.getTaille() ; x++) {
+	        for (int y = 0 ; y < modele.getTaille(); y++) {
 	            buttons[x][y] = new JButton();
 	            buttons[x][y].setPreferredSize(new Dimension(30, 30));
 	        }

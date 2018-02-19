@@ -7,11 +7,12 @@ import javax.swing.JFrame;
 
 import representationCo.view.VueJeu;
 import representationCo.modele.EtatOthello;
+import representationCo.modele.PlateauDeJeu;
 
 
 public class Jeu extends JFrame{
 	
-	private EtatOthello modele;
+	private PlateauDeJeu modele;
 	
 	public Jeu(){
 		/* frame settings */
@@ -20,7 +21,7 @@ public class Jeu extends JFrame{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		
-		modele = new EtatOthello();
+		modele = new PlateauDeJeu();
 		VueJeu lanceur = new VueJeu(modele);
 		
 		this.getContentPane().add(lanceur);
