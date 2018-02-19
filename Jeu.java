@@ -30,10 +30,6 @@ public class Jeu extends JFrame{
 		this.add(vuePlateau,BorderLayout.CENTER);
 		this.pack();
 		this.setVisible(true);
-		modele.jouer(3, 3);
-		modele.jouer(4, 3);
-		modele.jouer(3, 4);
-		modele.jouer(4, 4);
 	}
 	
 	public String toString(){

@@ -20,6 +20,11 @@ public class PlateauDeJeu {
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
+    		//Affichage des 4 jetons de départ 
+    		jouer(3, 3);
+    		jouer(3, 4);
+    		jouer(4, 4);
+    		jouer(4, 3);
     }
     
     public PlateauDeJeu(int taille) {
@@ -30,6 +35,11 @@ public class PlateauDeJeu {
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
+    		//Affichage des 4 jetons de départ 
+    		jouer(3, 3);
+    		jouer(3, 4);
+    		jouer(4, 4);
+    		jouer(4, 3);
     }
     
     public void ajouterVue(Vue vue) {
