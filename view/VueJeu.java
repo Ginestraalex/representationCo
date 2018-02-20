@@ -53,7 +53,7 @@ public class VueJeu extends JPanel implements Vue {
 					if(modele.getCouleur(i, j) == 'B'){
 						buttons[i][j].setIcon(PictureFactory.pionBlanc);
 					}
-					else{
+					else if(modele.getCouleur(i, j) == 'N'){
 						buttons[i][j].setIcon(PictureFactory.pionNoir);
 					}
 				}

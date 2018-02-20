@@ -18,7 +18,7 @@ public class PlateauDeJeu {
     		tableauJoueurs = new Joueur[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
-    		tourDuJoueurNum = 0;
+    		tourDuJoueurNum = 1;
     		vues = new ArrayList<Vue>();
     		//Affichage des 4 jetons de départ 
     		jouer(3, 3);
@@ -33,7 +33,7 @@ public class PlateauDeJeu {
     		tableauJoueurs = new Joueur[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
-    		tourDuJoueurNum = 0;
+    		tourDuJoueurNum = 1;
     		vues = new ArrayList<Vue>();
     		//Affichage des 4 jetons de départ 
     		jouer(3, 3);
@@ -60,6 +60,117 @@ public class PlateauDeJeu {
     		return etat.getCouleur(i, j);
     }
     
+    public void calculJouabilite(){
+    		int k;
+    		boolean jouable = false;
+    		if(tourDuJoueurNum == 1) { //tour joueur blanc
+    			for(int i = 0 ; i < taillePlateau ; i++) {
+    				for(int j = 0 ; j < taillePlateau ; j++) {
+    					if(etat.getCouleur(i, j) == 'N') {
+    						if(etat.getCouleur(i-1, j-1) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(i+k < taillePlateau && j+k < taillePlateau && !jouable) {
+    								if(etat.getCouleur(i+k, j+k) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i+k, j+k, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i, j-1) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(j+k < taillePlateau && !jouable) {
+    								if(etat.getCouleur(i, j+k) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i, j+k, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i+1, j-1) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(i-k > 0 && j+k < taillePlateau && !jouable) {
+    								if(etat.getCouleur(i-k, j+k) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i-k, j+k, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i+1, j) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(i-k > 0 && !jouable) {
+    								if(etat.getCouleur(i-k, j) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i-k, j, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i+1, j+1) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(i-k > 0 && j-k > 0 && !jouable) {
+    								if(etat.getCouleur(i-k, j-k) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i-k, j-k, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i, j+1) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(j-k > 0 && !jouable) {
+    								if(etat.getCouleur(i, j-k) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i, j-k, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i-1, j+1) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(i+k < taillePlateau && j-k > 0 && !jouable) {
+    								if(etat.getCouleur(i+k, j-k) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i+k, j-k, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    						else if(etat.getCouleur(i-1, j) == 'B') {
+    							k = 1;
+    							jouable = false;
+    							while(i+k < taillePlateau && !jouable) {
+    								if(etat.getCouleur(i+k, j) == 'V') {
+    									jouable = true;
+    									etat.setCouleur(i+k, j, 'J');
+    								}
+    							}
+    							jouable = false;
+    						}
+    					}
+    				}
+    			}
+    		}
+    		else { // tour joueur noir
+    			
+    		}
+    }
+    
+    public boolean estJouable(int i, int j){
+    		if(etat.getCouleur(i,j) == 'J') {
+    			return true;
+    		}
+    		return false;
+    }
+    
     /*
      * retourne vrai si le joueur peur jouer
      */
@@ -74,7 +185,6 @@ public class PlateauDeJeu {
     			tourDuJoueurNum++;
     			tourDuJoueurNum = tourDuJoueurNum % 2;
 			maj();
-			System.out.println(this.toString());
     		}
     }
     
@@ -102,7 +212,7 @@ public class PlateauDeJeu {
     
     
     public boolean isEmpty(int i, int j){
-    		if( etat.getCouleur(i, j) == 'V' ) {
+    		if( etat.getCouleur(i, j) == 'V'  ) {
     			return true;
     		}
     		return false;
