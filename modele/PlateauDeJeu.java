@@ -71,12 +71,97 @@ public class PlateauDeJeu {
     			}
     		}
     		if(tourDuJoueurNum == 0) { //tour joueur blanc
-    			for(int i = 0 ; i < taillePlateau ; i++) {
-    				for(int j = 0 ; j < taillePlateau ; j++) {
+    			/* lignes contoures du plateau */
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(i, 0) == 'N' ){
+    					if(etat.getCouleur(i-1, 0) == 'B'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(i+k, 0) == 'V'){
+									jouable = true;
+									etat.setCouleur(i+k, 0, 'J');
+    							}	
+    							else if(etat.getCouleur(i+k, 0) == 'B'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(i+1, 0) == 'B'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(i, taillePlateau-1) == 'N' ){
+    					if(etat.getCouleur(i-1, taillePlateau-1) == 'B'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(i+k, taillePlateau-1) == 'V'){
+									jouable = true;
+									etat.setCouleur(i+k, taillePlateau-1, 'J');
+    							}	
+    							else if(etat.getCouleur(i+k, taillePlateau-1) == 'B'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(i+1, taillePlateau-1) == 'B'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(taillePlateau-1, i) == 'N' ){
+    					if(etat.getCouleur(taillePlateau-1, i-1) == 'B'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(taillePlateau-1, i+k) == 'V'){
+									jouable = true;
+									etat.setCouleur(taillePlateau-1, i+k, 'J');
+    							}	
+    							else if(etat.getCouleur(taillePlateau-1, i+k) == 'B'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(taillePlateau-1, i+1) == 'B'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(0, i) == 'N' ){
+    					if(etat.getCouleur(0, i-1) == 'B'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(0, i+k) == 'V'){
+									jouable = true;
+									etat.setCouleur(0, i+k, 'J');
+    							}	
+    							else if(etat.getCouleur(0, i+k) == 'B'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(0, i+1) == 'B'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			/* lignes intérieures */
+    			for(int i = 1 ; i < taillePlateau-1 ; i++) {
+    				for(int j = 1 ; j < taillePlateau-1 ; j++) {
     					if(etat.getCouleur(i, j) == 'N') {
     						if(etat.getCouleur(i-1, j-1) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(i+k < taillePlateau && j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i+k, j+k) == 'V') {
     									jouable = true;
@@ -89,9 +174,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i, j-1) == 'B') {
+    						if(etat.getCouleur(i, j-1) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i, j+k) == 'V') {
     									jouable = true;
@@ -104,9 +188,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i+1, j-1) == 'B') {
+    						if(etat.getCouleur(i+1, j-1) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(i-k > 0 && j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i-k, j+k) == 'V') {
     									jouable = true;
@@ -119,9 +202,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i+1, j) == 'B') {
+    						if(etat.getCouleur(i+1, j) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(i-k > 0 && !jouable) {
     								if(etat.getCouleur(i-k, j) == 'V') {
     									jouable = true;
@@ -134,9 +216,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i+1, j+1) == 'B') {
+    						if(etat.getCouleur(i+1, j+1) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(i-k > 0 && j-k > 0 && !jouable) {
     								if(etat.getCouleur(i-k, j-k) == 'V') {
     									jouable = true;
@@ -149,9 +230,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i, j+1) == 'B') {
+    						if(etat.getCouleur(i, j+1) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(j-k > 0 && !jouable) {
     								if(etat.getCouleur(i, j-k) == 'V') {
     									jouable = true;
@@ -164,9 +244,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i-1, j+1) == 'B') {
+    						if(etat.getCouleur(i-1, j+1) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(i+k < taillePlateau && j-k > 0 && !jouable) {
     								if(etat.getCouleur(i+k, j-k) == 'V') {
     									jouable = true;
@@ -179,9 +258,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i-1, j) == 'B') {
+    						if(etat.getCouleur(i-1, j) == 'B') {
     							k = 1;
-    							jouable = false;
     							while(i+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i+k, j) == 'V') {
     									jouable = true;
@@ -199,12 +277,98 @@ public class PlateauDeJeu {
     			}
     		}
     		else { // tour joueur noir
-    			for(int i = 0 ; i < taillePlateau ; i++) {
-    				for(int j = 0 ; j < taillePlateau ; j++) {
+    			/* lignes contoures du plateau */
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(i, 0) == 'B' ){
+    					if(etat.getCouleur(i-1, 0) == 'N'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(i+k, 0) == 'V'){
+									jouable = true;
+									etat.setCouleur(i+k, 0, 'J');
+    							}	
+    							else if(etat.getCouleur(i+k, 0) == 'N'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(i+1, 0) == 'N'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(i, taillePlateau-1) == 'B' ){
+    					if(etat.getCouleur(i-1, taillePlateau-1) == 'N'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(i+k, taillePlateau-1) == 'V'){
+									jouable = true;
+									etat.setCouleur(i+k, taillePlateau-1, 'J');
+    							}	
+    							else if(etat.getCouleur(i+k, taillePlateau-1) == 'N'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(i+1, taillePlateau-1) == 'N'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(taillePlateau-1, i) == 'B' ){
+    					if(etat.getCouleur(taillePlateau-1, i-1) == 'N'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(taillePlateau-1, i+k) == 'V'){
+									jouable = true;
+									etat.setCouleur(taillePlateau-1, i+k, 'J');
+    							}	
+    							else if(etat.getCouleur(taillePlateau-1, i+k) == 'N'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(taillePlateau-1, i+1) == 'N'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			for(int i = 1; i < taillePlateau-1; i++){
+    				if(etat.getCouleur(0, i) == 'B' ){
+    					if(etat.getCouleur(0, i-1) == 'N'){
+    						k = 1;
+    						while(i+k < taillePlateau && !jouable){
+    							if(etat.getCouleur(0, i+k) == 'V'){
+									jouable = true;
+									etat.setCouleur(0, i+k, 'J');
+    							}	
+    							else if(etat.getCouleur(0, i+k) == 'N'){
+    								jouable = true;
+    							}
+    							k++;
+    						}
+    						jouable = false;
+    					}
+    					if(etat.getCouleur(0, i+1) == 'N'){
+    						k = 1;
+    					}
+    				}
+    			}
+    			/* lignes intérieures du plateau */
+    			for(int i = 1 ; i < taillePlateau-1 ; i++) {
+    				for(int j = 1 ; j < taillePlateau-1 ; j++) {
     					if(etat.getCouleur(i, j) == 'B') {
+    						
     						if(etat.getCouleur(i-1, j-1) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(i+k < taillePlateau && j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i+k, j+k) == 'V') {
     									jouable = true;
@@ -217,9 +381,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i, j-1) == 'N') {
+    						if(etat.getCouleur(i, j-1) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i, j+k) == 'V') {
     									jouable = true;
@@ -232,9 +395,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i+1, j-1) == 'N') {
+    						if(etat.getCouleur(i+1, j-1) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(i-k > 0 && j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i-k, j+k) == 'V') {
     									jouable = true;
@@ -247,10 +409,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i+1, j) == 'N') {
+    						if(etat.getCouleur(i+1, j) == 'N') {
     							k = 1;
-    							jouable = false;
-
     							while(i-k > 0 && !jouable) {
     								if(etat.getCouleur(i-k, j) == 'V') {
     									jouable = true;
@@ -263,9 +423,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i+1, j+1) == 'N') {
+    						if(etat.getCouleur(i+1, j+1) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(i-k > 0 && j-k > 0 && !jouable) {
     								if(etat.getCouleur(i-k, j-k) == 'V') {
     									jouable = true;
@@ -278,9 +437,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i, j+1) == 'N') {
+    						if(etat.getCouleur(i, j+1) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(j-k > 0 && !jouable) {
     								if(etat.getCouleur(i, j-k) == 'V') {
     									jouable = true;
@@ -293,9 +451,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i-1, j+1) == 'N') {
+    						if(etat.getCouleur(i-1, j+1) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(i+k < taillePlateau && j-k > 0 && !jouable) {
     								if(etat.getCouleur(i+k, j-k) == 'V') {
     									jouable = true;
@@ -308,9 +465,8 @@ public class PlateauDeJeu {
     							}
     							jouable = false;
     						}
-    						else if(etat.getCouleur(i-1, j) == 'N') {
+    						if(etat.getCouleur(i-1, j) == 'N') {
     							k = 1;
-    							jouable = false;
     							while(i+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i+k, j) == 'V') {
     									jouable = true;
@@ -350,8 +506,7 @@ public class PlateauDeJeu {
     			tourDuJoueurNum++;
     			tourDuJoueurNum = tourDuJoueurNum % 2;
         		this.calculJouabilite();
-
-			maj();
+        		maj();
     		}
     }
     

@@ -33,7 +33,7 @@ public class VueJeu extends JPanel implements Vue {
 	        }
 	    }
 	    maj();
-		//mod.ajouterVue(this); probleme avec cette ligne
+		mod.ajouterVue(this);
 	}
 
 	public void initialisation() {
