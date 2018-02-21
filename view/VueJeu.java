@@ -25,10 +25,11 @@ public class VueJeu extends JPanel implements Vue {
 		GridLayout grille = new GridLayout(mod.getTaille(),mod.getTaille());
 		this.setLayout(grille);
 	    initialisation();
-	    for (int x = 0 ; x < mod.getTaille() ; x++) {
-	        for (int y = 0 ; y < mod.getTaille() ; y++) {
+	    for (int y = 0 ; y < mod.getTaille() ; y++) {
+	        for (int x = 0 ; x < mod.getTaille() ; x++) {
         			this.add(buttons[x][y]);
         			this.buttons[x][y].addActionListener(new EcouteurBouton(x, y, mod).getActionListener());
+        			buttons[x][y].setText("X = "+ x +"Y = " +y);
 	        }
 	    }
 	    maj();
@@ -49,12 +50,16 @@ public class VueJeu extends JPanel implements Vue {
 	public void maj() {
 		for(int i = 0 ; i < buttons.length ; i++){
 			for(int j = 0 ; j < buttons.length ; j++) {
+				buttons[i][j].setText(" ");
 				if(!modele.isEmpty(i, j)) {
 					if(modele.getCouleur(i, j) == 'B'){
 						buttons[i][j].setIcon(PictureFactory.pionBlanc);
 					}
 					else if(modele.getCouleur(i, j) == 'N'){
 						buttons[i][j].setIcon(PictureFactory.pionNoir);
+					}
+					else if(modele.getCouleur(i, j) == 'J') {
+						buttons[i][j].setText("J");
 					}
 				}
 			}

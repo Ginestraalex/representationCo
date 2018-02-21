@@ -21,12 +21,12 @@ public class EtatOthello extends Etat{
 		}
 	}
 	
-	public char getCouleur(int i, int j) {
-		return plateauJeu[i][j].getCouleur();
+	public char getCouleur(int x, int y) {
+		return plateauJeu[x][y].getCouleur();
 	}
 	
-	public void setCouleur(int i, int j, char laCouleur) {
-		plateauJeu[i][j].setCouleur(laCouleur);
+	public void setCouleur(int x, int y, char laCouleur) {
+		plateauJeu[x][y].setCouleur(laCouleur);
 	}
 	
 	
