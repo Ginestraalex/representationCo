@@ -13,33 +13,23 @@ public class PlateauDeJeu {
     private ArrayList<Vue> vues;
     
     public PlateauDeJeu() {
-    		etat = new EtatOthello(8);
-    		taillePlateau = 8;
+    		nouvellePartie(8);
     		tableauJoueurs = new Joueur[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 1;
     		vues = new ArrayList<Vue>();
-    		//Affichage des 4 jetons de départ 
-    		jouer(3, 3);
-    		jouer(3, 4);
-    		jouer(4, 4);
-    		jouer(4, 3);
+    		lancer();
     }
     
     public PlateauDeJeu(int taille) {
-    		taillePlateau = taille;
-    		etat = new EtatOthello(taille);
+    		nouvellePartie(taille);
     		tableauJoueurs = new Joueur[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 1;
     		vues = new ArrayList<Vue>();
-    		//Affichage des 4 jetons de départ 
-    		jouer(3, 3);
-    		jouer(3, 4);
-    		jouer(4, 4);
-    		jouer(4, 3);
+    		lancer();
     }
     
     public void ajouterVue(Vue vue) {
@@ -59,6 +49,17 @@ public class PlateauDeJeu {
     public char getCouleur(int i, int j) {
     		return etat.getCouleur(i, j);
     }
+    
+    
+    public void lancer(){
+    	//Affichage des 4 jetons de départ 
+		etat.setCouleur(taillePlateau/2-1, taillePlateau/2-1, 'N');
+		etat.setCouleur(taillePlateau/2-1, taillePlateau/2, 'B');
+		etat.setCouleur(taillePlateau/2, taillePlateau/2-1, 'B');
+		etat.setCouleur(taillePlateau/2, taillePlateau/2, 'N');
+		this.calculJouabilite();
+    }
+    
     
     public void calculJouabilite(){
     		int k;
@@ -190,7 +191,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i+1, j-1) == 'B') {
     							k = 1;
-    							while(i-k > 0 && j+k < taillePlateau && !jouable) {
+    							while(i-k >= 0 && j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i-k, j+k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i-k, j+k, 'J');
@@ -204,7 +205,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i+1, j) == 'B') {
     							k = 1;
-    							while(i-k > 0 && !jouable) {
+    							while(i-k >= 0 && !jouable) {
     								if(etat.getCouleur(i-k, j) == 'V') {
     									jouable = true;
     									etat.setCouleur(i-k, j, 'J');
@@ -218,7 +219,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i+1, j+1) == 'B') {
     							k = 1;
-    							while(i-k > 0 && j-k > 0 && !jouable) {
+    							while(i-k >= 0 && j-k >= 0 && !jouable) {
     								if(etat.getCouleur(i-k, j-k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i-k, j-k, 'J');
@@ -232,7 +233,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i, j+1) == 'B') {
     							k = 1;
-    							while(j-k > 0 && !jouable) {
+    							while(j-k >= 0 && !jouable) {
     								if(etat.getCouleur(i, j-k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i, j-k, 'J');
@@ -246,7 +247,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i-1, j+1) == 'B') {
     							k = 1;
-    							while(i+k < taillePlateau && j-k > 0 && !jouable) {
+    							while(i+k < taillePlateau && j-k >= 0 && !jouable) {
     								if(etat.getCouleur(i+k, j-k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i+k, j-k, 'J');
@@ -397,7 +398,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i+1, j-1) == 'N') {
     							k = 1;
-    							while(i-k > 0 && j+k < taillePlateau && !jouable) {
+    							while(i-k >= 0 && j+k < taillePlateau && !jouable) {
     								if(etat.getCouleur(i-k, j+k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i-k, j+k, 'J');
@@ -411,7 +412,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i+1, j) == 'N') {
     							k = 1;
-    							while(i-k > 0 && !jouable) {
+    							while(i-k >= 0 && !jouable) {
     								if(etat.getCouleur(i-k, j) == 'V') {
     									jouable = true;
     									etat.setCouleur(i-k, j, 'J');
@@ -425,7 +426,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i+1, j+1) == 'N') {
     							k = 1;
-    							while(i-k > 0 && j-k > 0 && !jouable) {
+    							while(i-k >= 0 && j-k >= 0 && !jouable) {
     								if(etat.getCouleur(i-k, j-k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i-k, j-k, 'J');
@@ -439,7 +440,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i, j+1) == 'N') {
     							k = 1;
-    							while(j-k > 0 && !jouable) {
+    							while(j-k >= 0 && !jouable) {
     								if(etat.getCouleur(i, j-k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i, j-k, 'J');
@@ -453,7 +454,7 @@ public class PlateauDeJeu {
     						}
     						if(etat.getCouleur(i-1, j+1) == 'N') {
     							k = 1;
-    							while(i+k < taillePlateau && j-k > 0 && !jouable) {
+    							while(i+k < taillePlateau && j-k >= 0 && !jouable) {
     								if(etat.getCouleur(i+k, j-k) == 'V') {
     									jouable = true;
     									etat.setCouleur(i+k, j-k, 'J');
@@ -496,7 +497,7 @@ public class PlateauDeJeu {
      * retourne vrai si le joueur peur jouer
      */
     public void jouer(int i, int j) {
-    		if(etat.getCouleur(i, j) == 'V' || etat.getCouleur(i,j) == 'J') {
+    		if(etat.getCouleur(i,j) == 'J') {
     			if(tourDuJoueurNum == 0) {
         			etat.setCouleur(i, j, 'B');
     			}
@@ -511,8 +512,14 @@ public class PlateauDeJeu {
     }
     
     public void nouvellePartie(int taille) {
+    	if(taille%2 == 1){
+    		taillePlateau = taille+1;
+    	}
+    	else{
 	    	taillePlateau = taille;
-	    	etat = new EtatOthello(taille);
+
+    	}
+    	etat = new EtatOthello(taillePlateau);
     }
     
     public boolean isEqual(Pion[][] tableauATester) {
