@@ -504,6 +504,7 @@ public class PlateauDeJeu {
     			else{
         			etat.setCouleur(i, j, 'N');
     			}
+    			colorer(i,j);
     			tourDuJoueurNum++;
     			tourDuJoueurNum = tourDuJoueurNum % 2;
         		this.calculJouabilite();
@@ -511,15 +512,126 @@ public class PlateauDeJeu {
     		}
     }
     
+   /*
+    * coloration des pions adjacents s'ils doivent l'etre
+    */
+    public void colorer(int x, int y) {
+    		int i = 1;
+    		char couleur = etat.getCouleur(x, y);
+    		char couleurOpposee;
+    		if(couleur == 'N') {
+    			couleurOpposee = 'B';
+    		}
+    		else {
+    			couleurOpposee = 'N';
+    		}		
+		/* ligne en bas */
+		if(y < taillePlateau-2 && etat.getCouleur(x,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && etat.getCouleur(x, y+i) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x, y+i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x, y+j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne en haut */
+		if(y > 1 && etat.getCouleur(x,y-i) == couleurOpposee) {
+			while(y-i > 0 && etat.getCouleur(x, y-i) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x, y-i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x, y-j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne droite */
+		if(x < taillePlateau-2 && etat.getCouleur(x+i,y) == couleurOpposee) {
+			while(x+i < taillePlateau-1 && etat.getCouleur(x+i, y) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x+i, y) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x+j, y, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne gauche */
+		if(x > 1 && etat.getCouleur(x-i,y) == couleurOpposee) {
+			while(x+i < taillePlateau-1 && etat.getCouleur(x-i, y) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x-i, y) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x-j, y, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne en diagonale droite-bas*/
+		if(y < taillePlateau-2 && x < taillePlateau-2 && etat.getCouleur(x+i,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && x+i < taillePlateau-1 && etat.getCouleur(x+i, y+i) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x+i, y+i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x+j, y+j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne en diagonale droite-haut */
+		if(y > 1 && x < taillePlateau-2 && etat.getCouleur(x+i,y-i) == couleurOpposee) {
+			while(y-i > 0 && x+i < taillePlateau-2 && etat.getCouleur(x+i, y-i) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x+i, y-i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x+j, y-j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne gauche-bas */
+		if(y < taillePlateau-2 && x > 1 && etat.getCouleur(x-i,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && x-i > 0 && etat.getCouleur(x-i, y+i) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x-i, y+i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x-j, y+j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne gauche-haut */
+		if(y > 1 && x > 1 && etat.getCouleur(x-i,y-i) == couleurOpposee) {
+			while(y-i > 0 && x-i > 0 && etat.getCouleur(x-i, y-i) == couleurOpposee) {
+				i++;
+			}
+			if(etat.getCouleur(x-i, y-i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					etat.setCouleur(x-j, y-j, couleur);
+				}
+			}
+			i = 1;
+		}
+    }
+    
     public void nouvellePartie(int taille) {
-    	if(taille%2 == 1){
-    		taillePlateau = taille+1;
-    	}
-    	else{
-	    	taillePlateau = taille;
-
-    	}
-    	etat = new EtatOthello(taillePlateau);
+	    	if(taille%2 == 1){
+	    		taillePlateau = taille+1;
+	    	}
+	    	else{
+		    	taillePlateau = taille;
+	
+	    	}
+	    	etat = new EtatOthello(taillePlateau);
     }
     
     public boolean isEqual(Pion[][] tableauATester) {
