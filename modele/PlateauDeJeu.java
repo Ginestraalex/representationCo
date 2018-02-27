@@ -2,6 +2,8 @@ package representationCo.modele;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import representationCo.view.Vue;
 
 public class PlateauDeJeu {
@@ -13,25 +15,23 @@ public class PlateauDeJeu {
     private ArrayList<Vue> vues;
     
     public PlateauDeJeu() {
-    		nouvellePartie(8);
     		tableauJoueurs = new Joueur[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
-    		tourDuJoueurNum = 1;
+    		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
-    		this.nouvellePartie(8);
+    		nouvellePartie(8);
     		this.calculJouabilite();
     }
     
     public PlateauDeJeu(int taille) {
-    		nouvellePartie(taille);
     		tableauJoueurs = new Joueur[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
-    		tourDuJoueurNum = 1;
+    		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
-    		this.nouvellePartie(taille);
-    		this.calculJouabilite();
+    		nouvellePartie(taille);
+    		calculJouabilite();
     }
     
     public void ajouterVue(Vue vue) {
@@ -68,13 +68,13 @@ public class PlateauDeJeu {
     		char cJoueur;
     		char cAdversaire;
     		int k = 1;
-    		if(tourDuJoueurNum == 0) { //tour joueur blanc
-    			cJoueur = 'B';
-    			cAdversaire = 'N';
-    		}
-    		else {	//tour joueur noir
+    		if(tourDuJoueurNum == 0) { //tour joueur noir
     			cJoueur = 'N';
     			cAdversaire = 'B';
+    		}
+    		else {	//tour joueur blanc
+    			cJoueur = 'B';
+    			cAdversaire = 'N';
     		}
 		for(int y = 0 ; y < taillePlateau ; y++) {
 			for(int x = 0 ; x < taillePlateau ; x++) {
@@ -171,21 +171,42 @@ public class PlateauDeJeu {
     		return false;
     }
     
+    
+    public void joueurSuivant() {
+    		tourDuJoueurNum++;
+		tourDuJoueurNum = tourDuJoueurNum % 2;
+		if(tourDuJoueurNum == 0) {
+				if(tableauJoueurs[0] != null) {
+					JOptionPane.showMessageDialog(null, "C'est au tour de: "+tableauJoueurs[0].getNom());
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "C'est au tour du joueur 1");
+				}
+		}
+		else if(tourDuJoueurNum == 1 ){
+			if(tableauJoueurs[1].getNom() != null) {
+				JOptionPane.showMessageDialog(null, "C'est au tour de: "+tableauJoueurs[1].getNom());
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "C'est au tour du joueur 2");
+			}
+		}
+    }
+    
     /*
      * retourne vrai si le joueur peur jouer
      */
     public void jouer(int i, int j) {
     		if(etat.getCouleur(i,j) == 'J') {
     			if(tourDuJoueurNum == 0) {
-        			etat.setCouleur(i, j, 'B');
-    			}
-    			else{
         			etat.setCouleur(i, j, 'N');
     			}
+    			else{
+        			etat.setCouleur(i, j, 'B');
+    			}
     			colorer(i,j);
-    			tourDuJoueurNum++;
-    			tourDuJoueurNum = tourDuJoueurNum % 2;
-        		this.calculJouabilite();
+    			joueurSuivant();
+        		calculJouabilite();
         		maj();
     		}
     }
@@ -305,7 +326,7 @@ public class PlateauDeJeu {
 	    taillePlateau = taille;
 	    tourDuJoueurNum = 1;
 	    	etat = new EtatOthello(taillePlateau);
-	    	
+	    	joueurSuivant();
     }
     
     public boolean isEqual(Pion[][] tableauATester) {
