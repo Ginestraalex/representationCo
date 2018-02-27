@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 
 import representationCo.view.Vue;
 import representationCo.view.VueJeu;
+import representationCo.menu.MenuBar;
 import representationCo.modele.PlateauDeJeu;
 
 
@@ -23,8 +24,11 @@ public class Jeu extends JFrame{
 		
 		modele = new PlateauDeJeu();
 		VueJeu vuePlateau = new VueJeu(modele);
-		
+		MenuBar menu = new MenuBar(modele);
+		this.setJMenuBar(menu);
+
 		modele.ajouterVue(vuePlateau);
+		modele.ajouterVue(menu);
 		
 		this.getContentPane().add(vuePlateau);
 		this.add(vuePlateau,BorderLayout.CENTER);

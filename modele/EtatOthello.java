@@ -19,6 +19,10 @@ public class EtatOthello extends Etat{
 				plateauJeu[i][j] = new Pion();
 			}
 		}
+		setCouleur(taille/2-1, taille/2-1, 'N');
+		setCouleur(taille/2-1, taille/2, 'B');
+		setCouleur(taille/2, taille/2-1, 'B');
+		setCouleur(taille/2, taille/2, 'N');
 	}
 	
 	public char getCouleur(int x, int y) {

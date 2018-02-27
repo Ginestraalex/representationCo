@@ -18,4 +18,12 @@ public abstract class Joueur {
 	public void setGagne(){
 		nbGagnees++;
 	}
+	
+	public int getGagne() {
+		return nbGagnees;
+	}
+	
+	public String getNom() {
+		return nomJoueur;
+	}
 }
