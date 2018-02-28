@@ -52,6 +52,13 @@ public class EtatOthello extends Etat{
 		joueur = j;
 	}
 	
+	public boolean estFinal() {
+		if( (nbPionsBlancs + nbPionsNoirs) == plateauJeu.length*plateauJeu.length ) {
+			return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public ArrayList<Etat> successeurs(Joueur j) {
 		// TODO Auto-generated method stub

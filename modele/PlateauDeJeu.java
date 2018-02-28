@@ -65,6 +65,7 @@ public class PlateauDeJeu {
     				}
     			}
     		}
+    		boolean estJouable = false;
     		char cJoueur;
     		char cAdversaire;
     		int k = 1;
@@ -86,6 +87,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x+k, y) == 'V' && k != 1) {
 							etat.setCouleur(x+k, y, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -96,6 +98,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x-k, y) == 'V' && k != 1) {
 							etat.setCouleur(x-k, y, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -106,6 +109,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x, y+k) == 'V' && k != 1) {
 							etat.setCouleur(x, y+k, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -116,6 +120,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x, y-k) == 'V' && k != 1) {
 							etat.setCouleur(x, y-k, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -126,6 +131,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x+k, y+k) == 'V' && k != 1) {
 							etat.setCouleur(x+k, y+k, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -136,6 +142,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x-k, y+k) == 'V' && k != 1) {
 							etat.setCouleur(x-k, y+k, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -146,6 +153,7 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x-k, y-k) == 'V' && k != 1) {
 							etat.setCouleur(x-k, y-k, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
@@ -156,11 +164,16 @@ public class PlateauDeJeu {
 						}
 						if(etat.getCouleur(x+k, y-k) == 'V' && k != 1) {
 							etat.setCouleur(x+k, y-k, 'J');
+							estJouable = true;
 						}
 						k = 1;
 					}
 				}
 			}
+		}
+		/* si le joueur ne peut pas jouer, il passe son tour */
+		if(!estJouable) {
+			joueurSuivant();
 		}
     }
     
@@ -185,7 +198,7 @@ public class PlateauDeJeu {
     			etat.setTourJoueur(tableauJoueurs[0]);
 		}
 		else if(tourDuJoueurNum == 1 ){
-			if(tableauJoueurs[1].getNom() != null) {
+			if(tableauJoueurs[1] != null) {
 				JOptionPane.showMessageDialog(null, "C'est au tour de: "+tableauJoueurs[1].getNom());
 			}
 			else {
@@ -193,10 +206,11 @@ public class PlateauDeJeu {
 			}
 			etat.setTourJoueur(tableauJoueurs[1]);
 		}
+		calculJouabilite();
     }
     
     /*
-     * retourne vrai si le joueur peur jouer
+     *  permet de jouer un coup
      */
     public void jouer(int i, int j) {
     		if(etat.getCouleur(i,j) == 'J') {
@@ -207,9 +221,14 @@ public class PlateauDeJeu {
         			etat.setCouleur(i, j, 'B');
     			}
     			colorer(i,j);
-    			joueurSuivant();
-        		calculJouabilite();
-        		maj();
+    			if(etat.estFinal()) {
+    				maj();
+    				finDeLaPartie();
+    			}
+    			else {
+    				joueurSuivant();
+            		maj();	
+    			}
     		}
     }
     
@@ -362,6 +381,9 @@ public class PlateauDeJeu {
     		return etat.getVainqueur();
     }
 
+    public void finDeLaPartie() {
+    		//TO-DO 
+    }
     
   //Affichage plateau du jeu sur terminal
   	public String toString(){
