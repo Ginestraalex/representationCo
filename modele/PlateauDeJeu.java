@@ -9,13 +9,13 @@ import representationCo.view.Vue;
 public class PlateauDeJeu {
 
 	private int taillePlateau;
-	private Joueur[] tableauJoueurs;
+	private JoueurOthello[] tableauJoueurs;
 	private int tourDuJoueurNum;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
     
     public PlateauDeJeu() {
-    		tableauJoueurs = new Joueur[2];
+    		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 0;
@@ -25,7 +25,7 @@ public class PlateauDeJeu {
     }
     
     public PlateauDeJeu(int taille) {
-    		tableauJoueurs = new Joueur[2];
+    		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 0;
@@ -182,6 +182,7 @@ public class PlateauDeJeu {
 				else {
 					JOptionPane.showMessageDialog(null, "C'est au tour du joueur 1");
 				}
+    			etat.setTourJoueur(tableauJoueurs[0]);
 		}
 		else if(tourDuJoueurNum == 1 ){
 			if(tableauJoueurs[1].getNom() != null) {
@@ -190,6 +191,7 @@ public class PlateauDeJeu {
 			else {
 				JOptionPane.showMessageDialog(null, "C'est au tour du joueur 2");
 			}
+			etat.setTourJoueur(tableauJoueurs[1]);
 		}
     }
     
@@ -352,6 +354,12 @@ public class PlateauDeJeu {
     			return true;
     		}
     		return false;
+    }
+    
+    
+    public Joueur getVainqueur()
+    {
+    		return etat.getVainqueur();
     }
 
     
