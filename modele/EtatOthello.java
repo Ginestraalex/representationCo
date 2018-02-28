@@ -30,14 +30,32 @@ public class EtatOthello extends Etat{
 		setCouleur(taille/2, taille/2, 'N');
 	}
 	
+	/*
+	 * retourne la couleur de la case
+	 */
 	public char getCouleur(int x, int y) {
 		return plateauJeu[x][y].getCouleur();
 	}
 	
-	public Joueur getVainqueur() {
-		return null;
+	/*
+	 * retourne le numéro du joueur vaiqueur:
+	 * 1 : pion blanc
+	 * 0 : pion noir
+	 * 2 : match nul
+	 */
+	public int getNumJoueurVainqueur() {
+		if(nbPionsNoirs < nbPionsBlancs) { 
+			return 1;
+		}
+		else if(nbPionsNoirs > nbPionsBlancs) {
+			return 0;
+		}
+		return 2;
 	}
 	
+	/*
+	 * defini le caractere laCouleur dans la case du plateau de jeu
+	 */
 	public void setCouleur(int x, int y, char laCouleur) {
 		if(laCouleur == 'N') {
 			this.nbPionsNoirs++;
@@ -48,10 +66,16 @@ public class EtatOthello extends Etat{
 		plateauJeu[x][y].setCouleur(laCouleur);
 	}
 	
+	/*
+	 * defini le joueur qui doit jouer
+	 */
 	public void setTourJoueur(JoueurOthello j) {
 		joueur = j;
 	}
 	
+	/*
+	 * test si l'etat est final
+	 */
 	public boolean estFinal() {
 		if( (nbPionsBlancs + nbPionsNoirs) == plateauJeu.length*plateauJeu.length ) {
 			return true;

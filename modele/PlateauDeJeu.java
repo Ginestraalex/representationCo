@@ -13,12 +13,14 @@ public class PlateauDeJeu {
 	private int tourDuJoueurNum;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
+    private boolean tourJoueurPrecedPasse;
     
     public PlateauDeJeu() {
     		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 0;
+    		tourJoueurPrecedPasse = false;
     		vues = new ArrayList<Vue>();
     		nouvellePartie(8);
     		this.calculJouabilite();
@@ -29,6 +31,7 @@ public class PlateauDeJeu {
     		tableauJoueurs[0] = null;
     		tableauJoueurs[1] = null;
     		tourDuJoueurNum = 0;
+    		tourJoueurPrecedPasse = false;
     		vues = new ArrayList<Vue>();
     		nouvellePartie(taille);
     		calculJouabilite();
@@ -172,7 +175,11 @@ public class PlateauDeJeu {
 			}
 		}
 		/* si le joueur ne peut pas jouer, il passe son tour */
-		if(!estJouable) {
+		if(!estJouable && tourJoueurPrecedPasse) {
+			finDeLaPartie();
+		}
+		else if(!estJouable) {
+			tourJoueurPrecedPasse = true;
 			joueurSuivant();
 		}
     }
@@ -222,7 +229,6 @@ public class PlateauDeJeu {
     			}
     			colorer(i,j);
     			if(etat.estFinal()) {
-    				maj();
     				finDeLaPartie();
     			}
     			else {
@@ -376,13 +382,24 @@ public class PlateauDeJeu {
     }
     
     
-    public Joueur getVainqueur()
+    public JoueurOthello getVainqueur()
     {
-    		return etat.getVainqueur();
+    		int numJoueur = etat.getNumJoueurVainqueur();
+    		if(numJoueur == 2) {
+    			return null;
+    		}
+    		else {
+    			return tableauJoueurs[numJoueur];
+    		}
     }
 
     public void finDeLaPartie() {
-    		//TO-DO 
+    		 maj();
+    		 JoueurOthello vainqueur = getVainqueur();
+    		 if(vainqueur != null) {
+    			 vainqueur.setGagne();
+        		 JOptionPane.showMessageDialog(null, "La partie est terminée. "+vainqueur.getNom()+" gagne la partie");
+    		 }
     }
     
   //Affichage plateau du jeu sur terminal
