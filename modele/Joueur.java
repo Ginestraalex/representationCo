@@ -15,14 +15,23 @@ public abstract class Joueur {
 		nomJoueur = nom;
 	}
 	
+	/*
+	 * fonction appelée quand un joueur remporte une partie
+	 */
 	public void setGagne(){
 		nbGagnees++;
 	}
 	
+	/*
+	 * retourne le nombre de partie gagnée
+	 */
 	public int getGagne() {
 		return nbGagnees;
 	}
 	
+	/*
+	 * retroune le nom du Joueur
+	 */
 	public String getNom() {
 		return nomJoueur;
 	}

@@ -10,10 +10,16 @@ public class Pion {
 		couleur = c;
 	}
 	
+	/*
+	 * retourne la valeur contenue dans la case
+	 */
 	public char getCouleur() {
 		return couleur;
 	}
 	
+	/*
+	 * definit la couleur de la case
+	 */
 	public void setCouleur(char laCouleur) {
 		couleur = laCouleur;
 	}
