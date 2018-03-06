@@ -37,10 +37,18 @@ public class PlateauDeJeu {
     		calculJouabilite();
     }
     
+    
+    /*
+     * permet l'ajout d'une vue
+     */
     public void ajouterVue(Vue vue) {
     		vues.add(vue);
     } 
     
+    
+    /*
+     * ajoute un joueur passé en paramètre à la liste des joueurs
+     */
     public void ajouterJoueur(String nom) {
     		JoueurOthello j = new JoueurOthello(nom);
     		if(tableauJoueurs[0] == null) {
@@ -51,15 +59,25 @@ public class PlateauDeJeu {
     		}
     }
     
+    /*
+     * retourne la taille de la grille de jeu
+     */
     public int getTaille() {
 		return taillePlateau;
     	}
     
+    /*
+     * retorune la couleur du pion(si il y en a un)
+     * se trouvant dans la case de coordonnée (i,j)
+     */
     public char getCouleur(int i, int j) {
     		return etat.getCouleur(i, j);
     }
     
-    
+    /*
+     * fonction remplissant le tableau de jeu en fonction de la jouabilité
+     * du joueur courrant
+     */
     public void calculJouabilite(){
     		for(int y = 0 ; y < taillePlateau ; y++) {
     			for(int x = 0 ; x < taillePlateau ; x++) {
@@ -184,6 +202,10 @@ public class PlateauDeJeu {
 		}
     }
     
+    
+    /*
+     * retourne true si le joueur peut jouer à cet endroit
+     */
     public boolean estJouable(int i, int j){
     		if(etat.getCouleur(i,j) == 'J') {
     			return true;
@@ -191,7 +213,9 @@ public class PlateauDeJeu {
     		return false;
     }
     
-    
+    /*
+     * passe la main au joueur suivant
+     */
     public void joueurSuivant() {
     		tourDuJoueurNum++;
 		tourDuJoueurNum = tourDuJoueurNum % 2;
@@ -239,7 +263,8 @@ public class PlateauDeJeu {
     }
     
    /*
-    * coloration des pions adjacents s'ils doivent l'etre
+    * coloration des pions adjacents a celui posé
+    * s'ils doivent l'etre
     */
     public void colorer(int x, int y) {
     		int i = 1;
@@ -289,10 +314,12 @@ public class PlateauDeJeu {
 		}
 		/* ligne gauche */
 		if(x > 1 && etat.getCouleur(x-i,y) == couleurOpposee) {
-			while(x+i < taillePlateau-1 && etat.getCouleur(x-i, y) == couleurOpposee) {
+			System.out.println("lala" + x);
+			while(x-i < taillePlateau-1 && etat.getCouleur(x-i, y) == couleurOpposee) {
 				i++;
 			}
 			if(etat.getCouleur(x-i, y) == couleur) {
+				System.out.println("on est dedans");
 				for(int j = 1 ; j < i ; j++) {
 					etat.setCouleur(x-j, y, couleur);
 				}
@@ -349,6 +376,9 @@ public class PlateauDeJeu {
 		}
     }
     
+    /*
+     * création d'une nouvelle partie
+     */
     public void nouvellePartie(int taille) {
 	    taillePlateau = taille;
 	    tourDuJoueurNum = 1;
@@ -356,6 +386,9 @@ public class PlateauDeJeu {
 	    	joueurSuivant();
     }
     
+    /*
+     * test si deux partie sont égales
+     */
     public boolean isEqual(Pion[][] tableauATester) {
     		int taille = tableauATester.length;
 	    	if(taille != taillePlateau){
@@ -373,7 +406,9 @@ public class PlateauDeJeu {
 	    	return true;
     }
     
-    
+    /*
+     * retourne vrai si la case ne contient pas de pion
+     */
     public boolean isEmpty(int i, int j){
     		if( etat.getCouleur(i, j) == 'V'  ) {
     			return true;
@@ -381,7 +416,9 @@ public class PlateauDeJeu {
     		return false;
     }
     
-    
+    /*
+     * retourne le vainqueur de la partie (s'il y en a un)
+     */
     public JoueurOthello getVainqueur()
     {
     		int numJoueur = etat.getNumJoueurVainqueur();
@@ -393,6 +430,9 @@ public class PlateauDeJeu {
     		}
     }
 
+    /*
+     * test si la partie est finie
+     */
     public void finDeLaPartie() {
     		 maj();
     		 JoueurOthello vainqueur = getVainqueur();
@@ -402,7 +442,9 @@ public class PlateauDeJeu {
     		 }
     }
     
-  //Affichage plateau du jeu sur terminal
+    	/*
+    	 * Affichage plateau du jeu sur terminal
+    	 */
   	public String toString(){
   		StringBuilder spb = new StringBuilder();
   		encadrementJeu(spb);
@@ -426,7 +468,9 @@ public class PlateauDeJeu {
 		return spb;
 	}
 
-  	
+  	/*
+  	 * fonction de mis a jour des vues
+  	 */
   	public void maj(){
   		for(Vue v : vues){
   			v.maj();

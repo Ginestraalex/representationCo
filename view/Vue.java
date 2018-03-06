@@ -2,6 +2,9 @@ package representationCo.view;
 
 
 public interface Vue{
-	// Vue graphique géré ici
+	
+	/*
+	 * mise a jour de la vue
+	 */
 	public void maj();
 }
