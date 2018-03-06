@@ -58,9 +58,15 @@ public class EtatOthello extends Etat{
 	 */
 	public void setCouleur(int x, int y, char laCouleur) {
 		if(laCouleur == 'N') {
+			if(this.plateauJeu[x][y].getCouleur() == 'B') {
+				nbPionsBlancs--;
+			}
 			this.nbPionsNoirs++;
 		}
 		else if(laCouleur == 'B') {
+			if(this.plateauJeu[x][y].getCouleur() == 'N') {
+				nbPionsNoirs--;
+			}
 			this.nbPionsBlancs++;
 		}
 		plateauJeu[x][y].setCouleur(laCouleur);
@@ -74,9 +80,11 @@ public class EtatOthello extends Etat{
 	}
 	
 	/*
-	 * test si l'etat est final
+	 * test si l'etat est final (si le plateau est rempli)
 	 */
 	public boolean estFinal() {
+		System.out.println("taille plateau" + (plateauJeu.length*plateauJeu.length));
+		System.out.println(""+(nbPionsBlancs+nbPionsNoirs));
 		if( (nbPionsBlancs + nbPionsNoirs) == plateauJeu.length*plateauJeu.length ) {
 			return true;
 		}

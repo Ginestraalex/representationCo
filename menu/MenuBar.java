@@ -23,19 +23,12 @@ public class MenuBar extends JMenuBar implements Vue{
 		paramPartie = new JMenu("Parametres");
 		ajouterJoueur = new JMenuItem("Ajouter Joueur");
 		nouvellePartie = new JMenuItem("Nouvelle Partie");
-		
-		paramPartie.add(ajouterJoueur);
-		paramPartie.add(nouvellePartie);
 
 		ajouterJoueur.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String nom;
-				nom = JOptionPane.showInputDialog("Quel est votre nom", "Nouveau Joueur");
-				if(nom != null) {
-					modele.ajouterJoueur(nom);
-					modele.maj();
-				}
+				modele.ajouterJoueur();
+				modele.maj();
 			}
 		});
 		
@@ -51,8 +44,10 @@ public class MenuBar extends JMenuBar implements Vue{
 				}
 			}
 		});
+		
+		paramPartie.add(ajouterJoueur);
+		paramPartie.add(nouvellePartie);
 		add(paramPartie);	
-
 	}
 
 	@Override

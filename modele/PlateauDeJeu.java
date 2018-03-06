@@ -13,12 +13,12 @@ public class PlateauDeJeu {
 	private int tourDuJoueurNum;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
-    private boolean tourJoueurPrecedPasse;
+    private boolean tourJoueurPrecedPasse; //variable de détection si le jeu est bloqué
     
     public PlateauDeJeu() {
     		tableauJoueurs = new JoueurOthello[2];
-    		tableauJoueurs[0] = null;
-    		tableauJoueurs[1] = null;
+    		tableauJoueurs[0] = new JoueurOthello("Joueur 1");
+    		tableauJoueurs[1] = new JoueurOthello("Joueur 2");
     		tourDuJoueurNum = 0;
     		tourJoueurPrecedPasse = false;
     		vues = new ArrayList<Vue>();
@@ -28,8 +28,8 @@ public class PlateauDeJeu {
     
     public PlateauDeJeu(int taille) {
     		tableauJoueurs = new JoueurOthello[2];
-    		tableauJoueurs[0] = null;
-    		tableauJoueurs[1] = null;
+    		tableauJoueurs[0] = new JoueurOthello("Joueur 1");
+    		tableauJoueurs[1] = new JoueurOthello("Joueur 2");
     		tourDuJoueurNum = 0;
     		tourJoueurPrecedPasse = false;
     		vues = new ArrayList<Vue>();
@@ -49,14 +49,22 @@ public class PlateauDeJeu {
     /*
      * ajoute un joueur passé en paramètre à la liste des joueurs
      */
-    public void ajouterJoueur(String nom) {
-    		JoueurOthello j = new JoueurOthello(nom);
-    		if(tableauJoueurs[0] == null) {
-    			tableauJoueurs[0] = j;
-    		}
-    		else {
-        		tableauJoueurs[1] = j;
-    		}
+    public void ajouterJoueur() {
+		String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
+		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
+		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui sera remplacé", "Ajout nouveau joueur", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
+		if(nomJoueurARemplacer != null) {
+			String nom = JOptionPane.showInputDialog("Quel est votre nom", "Ajout nouveau joueur");
+			if(nom != null) {
+				JoueurOthello j = new JoueurOthello(nom);
+		    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
+		    			tableauJoueurs[0] = j;
+		    		}
+		    		else {
+		        		tableauJoueurs[1] = j;
+		    		}
+			}
+		}
     }
     
     /*
@@ -220,21 +228,11 @@ public class PlateauDeJeu {
     		tourDuJoueurNum++;
 		tourDuJoueurNum = tourDuJoueurNum % 2;
 		if(tourDuJoueurNum == 0) {
-				if(tableauJoueurs[0] != null) {
-					JOptionPane.showMessageDialog(null, "C'est au tour de: "+tableauJoueurs[0].getNom());
-				}
-				else {
-					JOptionPane.showMessageDialog(null, "C'est au tour du joueur 1");
-				}
+			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[0].getNom());
     			etat.setTourJoueur(tableauJoueurs[0]);
 		}
 		else if(tourDuJoueurNum == 1 ){
-			if(tableauJoueurs[1] != null) {
-				JOptionPane.showMessageDialog(null, "C'est au tour de: "+tableauJoueurs[1].getNom());
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "C'est au tour du joueur 2");
-			}
+			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[1].getNom());
 			etat.setTourJoueur(tableauJoueurs[1]);
 		}
 		calculJouabilite();
@@ -253,6 +251,7 @@ public class PlateauDeJeu {
     			}
     			colorer(i,j);
     			if(etat.estFinal()) {
+    				System.out.println("on finit");
     				finDeLaPartie();
     			}
     			else {
@@ -314,12 +313,10 @@ public class PlateauDeJeu {
 		}
 		/* ligne gauche */
 		if(x > 1 && etat.getCouleur(x-i,y) == couleurOpposee) {
-			System.out.println("lala" + x);
-			while(x-i < taillePlateau-1 && etat.getCouleur(x-i, y) == couleurOpposee) {
+			while(x-i > 0 && etat.getCouleur(x-i, y) == couleurOpposee) {
 				i++;
 			}
 			if(etat.getCouleur(x-i, y) == couleur) {
-				System.out.println("on est dedans");
 				for(int j = 1 ; j < i ; j++) {
 					etat.setCouleur(x-j, y, couleur);
 				}
