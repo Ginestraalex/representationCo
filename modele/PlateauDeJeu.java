@@ -251,7 +251,6 @@ public class PlateauDeJeu {
     			}
     			colorer(i,j);
     			if(etat.estFinal()) {
-    				System.out.println("on finit");
     				finDeLaPartie();
     			}
     			else {
@@ -383,25 +382,6 @@ public class PlateauDeJeu {
 	    	joueurSuivant();
     }
     
-    /*
-     * test si deux partie sont égales
-     */
-    public boolean isEqual(Pion[][] tableauATester) {
-    		int taille = tableauATester.length;
-	    	if(taille != taillePlateau){
-			return false;
-		}
-	    	else{
-			for(int i = 0 ; i < taille ; i++){
-				for(int j = 0 ; j < taille ; j++) {
-					if(tableauATester[i][j].getCouleur() != etat.lecture(i, j)){
-						return false;
-					}
-				}
-			}
-		}
-	    	return true;
-    }
     
     /*
      * retourne vrai si la case ne contient pas de pion

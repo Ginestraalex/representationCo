@@ -59,8 +59,6 @@ public class EtatOthello extends Etat{
 	 * test si l'etat est final (si le plateau est rempli)
 	 */
 	public boolean estFinal() {
-		System.out.println("taille plateau" + (plateauJeu.length*plateauJeu.length));
-		System.out.println(""+(nbPionsBlancs+nbPionsNoirs));
 		if( (nbPionsBlancs + nbPionsNoirs) == plateauJeu.length*plateauJeu.length ) {
 			return true;
 		}
@@ -73,11 +71,7 @@ public class EtatOthello extends Etat{
 		return null;
 	}
 
-	
-	@Override
-	public char lecture() {
-		return 0;
-	}
+
 	
 	/*
 	 * retourne la couleur de la case
@@ -85,11 +79,7 @@ public class EtatOthello extends Etat{
 	public char lecture(int x, int y) {
 		return plateauJeu[x][y].getCouleur();
 	}
-
-	@Override
-	public void ecriture() {
-		
-	}
+	
 	
 	/*
 	 * defini le caractere laCouleur dans la case du plateau de jeu
@@ -108,6 +98,24 @@ public class EtatOthello extends Etat{
 			this.nbPionsBlancs++;
 		}
 		plateauJeu[x][y].setCouleur(laCouleur);
+	}
+
+	public boolean estEgal(EtatOthello e) {
+		/* symetrie axiale et rotative a faire */
+		if( this.nbPionsBlancs == e.nbPionsBlancs && this.nbPionsNoirs == e.nbPionsNoirs && joueur == e.joueur) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void affichage() {
+		for(int i = 0 ; i < plateauJeu.length ; i++) {
+			for(int j = 0 ; j < plateauJeu[0].length ; j++) {
+				System.out.print(" "+lecture(j,i)+ " ");
+			}
+			System.out.println("");
+		}
 	}
 	
 }

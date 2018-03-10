@@ -25,7 +25,7 @@ public class Jeu extends JFrame{
 		this.setLocationRelativeTo(null);
 		
 		/* resoud le probleme d'affichage sous mac */
-		UIManager.setLookAndFeel(new MetalLookAndFeel());
+		//UIManager.setLookAndFeel(new MetalLookAndFeel());
 
 		
 		modele = new PlateauDeJeu();

@@ -9,8 +9,6 @@ public abstract class Etat {
 	
 	public abstract ArrayList<Etat> successeurs(Joueur j);
 	
-	public abstract char lecture();
-	
-	public abstract void ecriture();
+	public abstract void affichage();
 	
 }
