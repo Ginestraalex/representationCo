@@ -24,18 +24,12 @@ public class EtatOthello extends Etat{
 		}
 		this.nbPionsBlancs = 0;
 		this.nbPionsNoirs = 0;
-		setCouleur(taille/2-1, taille/2-1, 'N');
-		setCouleur(taille/2-1, taille/2, 'B');
-		setCouleur(taille/2, taille/2-1, 'B');
-		setCouleur(taille/2, taille/2, 'N');
+		ecriture(taille/2-1, taille/2-1, 'N');
+		ecriture(taille/2-1, taille/2, 'B');
+		ecriture(taille/2, taille/2-1, 'B');
+		ecriture(taille/2, taille/2, 'N');
 	}
 	
-	/*
-	 * retourne la couleur de la case
-	 */
-	public char getCouleur(int x, int y) {
-		return plateauJeu[x][y].getCouleur();
-	}
 	
 	/*
 	 * retourne le numéro du joueur vaiqueur:
@@ -53,24 +47,6 @@ public class EtatOthello extends Etat{
 		return 2;
 	}
 	
-	/*
-	 * defini le caractere laCouleur dans la case du plateau de jeu
-	 */
-	public void setCouleur(int x, int y, char laCouleur) {
-		if(laCouleur == 'N') {
-			if(this.plateauJeu[x][y].getCouleur() == 'B') {
-				nbPionsBlancs--;
-			}
-			this.nbPionsNoirs++;
-		}
-		else if(laCouleur == 'B') {
-			if(this.plateauJeu[x][y].getCouleur() == 'N') {
-				nbPionsNoirs--;
-			}
-			this.nbPionsBlancs++;
-		}
-		plateauJeu[x][y].setCouleur(laCouleur);
-	}
 	
 	/*
 	 * defini le joueur qui doit jouer
@@ -95,6 +71,43 @@ public class EtatOthello extends Etat{
 	public ArrayList<Etat> successeurs(Joueur j) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	
+	@Override
+	public char lecture() {
+		return 0;
+	}
+	
+	/*
+	 * retourne la couleur de la case
+	 */
+	public char lecture(int x, int y) {
+		return plateauJeu[x][y].getCouleur();
+	}
+
+	@Override
+	public void ecriture() {
+		
+	}
+	
+	/*
+	 * defini le caractere laCouleur dans la case du plateau de jeu
+	 */
+	public void ecriture(int x, int y, char laCouleur) {
+		if(laCouleur == 'N') {
+			if(this.plateauJeu[x][y].getCouleur() == 'B') {
+				nbPionsBlancs--;
+			}
+			this.nbPionsNoirs++;
+		}
+		else if(laCouleur == 'B') {
+			if(this.plateauJeu[x][y].getCouleur() == 'N') {
+				nbPionsNoirs--;
+			}
+			this.nbPionsBlancs++;
+		}
+		plateauJeu[x][y].setCouleur(laCouleur);
 	}
 	
 }

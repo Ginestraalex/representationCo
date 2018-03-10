@@ -79,7 +79,7 @@ public class PlateauDeJeu {
      * se trouvant dans la case de coordonnée (i,j)
      */
     public char getCouleur(int i, int j) {
-    		return etat.getCouleur(i, j);
+    		return etat.lecture(i, j);
     }
     
     /*
@@ -89,8 +89,8 @@ public class PlateauDeJeu {
     public void calculJouabilite(){
     		for(int y = 0 ; y < taillePlateau ; y++) {
     			for(int x = 0 ; x < taillePlateau ; x++) {
-    				if(etat.getCouleur(x, y) == 'J') {
-    					etat.setCouleur(x, y, 'V');
+    				if(etat.lecture(x, y) == 'J') {
+    					etat.ecriture(x, y, 'V');
     				}
     			}
     		}
@@ -108,91 +108,91 @@ public class PlateauDeJeu {
     		}
 		for(int y = 0 ; y < taillePlateau ; y++) {
 			for(int x = 0 ; x < taillePlateau ; x++) {
-				if(etat.getCouleur(x, y) == cJoueur) {
+				if(etat.lecture(x, y) == cJoueur) {
 					/* ligne vers droite */
 					if(x < taillePlateau-2) {
-						while(x+k < taillePlateau-1 && etat.getCouleur(x+k, y) == cAdversaire) {
+						while(x+k < taillePlateau-1 && etat.lecture(x+k, y) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x+k, y) == 'V' && k != 1) {
-							etat.setCouleur(x+k, y, 'J');
+						if(etat.lecture(x+k, y) == 'V' && k != 1) {
+							etat.ecriture(x+k, y, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* ligne vers gauche */
 					if(x > 1) {
-						while(x-k > 0 && etat.getCouleur(x-k, y) == cAdversaire) {
+						while(x-k > 0 && etat.lecture(x-k, y) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x-k, y) == 'V' && k != 1) {
-							etat.setCouleur(x-k, y, 'J');
+						if(etat.lecture(x-k, y) == 'V' && k != 1) {
+							etat.ecriture(x-k, y, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* ligne vers bas */
 					if(y < taillePlateau-2) {
-						while(y+k < taillePlateau-1 && etat.getCouleur(x, y+k) == cAdversaire) {
+						while(y+k < taillePlateau-1 && etat.lecture(x, y+k) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x, y+k) == 'V' && k != 1) {
-							etat.setCouleur(x, y+k, 'J');
+						if(etat.lecture(x, y+k) == 'V' && k != 1) {
+							etat.ecriture(x, y+k, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* ligne vers le haut */
 					if(y > 1) {
-						while(y-k > 0 && etat.getCouleur(x, y-k) == cAdversaire) {
+						while(y-k > 0 && etat.lecture(x, y-k) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x, y-k) == 'V' && k != 1) {
-							etat.setCouleur(x, y-k, 'J');
+						if(etat.lecture(x, y-k) == 'V' && k != 1) {
+							etat.ecriture(x, y-k, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* diagonale bas-droit */
 					if(x < taillePlateau-2 && y < taillePlateau-2 ) {
-						while(y+k < taillePlateau-1  &&  x+k < taillePlateau-1 && etat.getCouleur(x+k, y+k) == cAdversaire) {
+						while(y+k < taillePlateau-1  &&  x+k < taillePlateau-1 && etat.lecture(x+k, y+k) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x+k, y+k) == 'V' && k != 1) {
-							etat.setCouleur(x+k, y+k, 'J');
+						if(etat.lecture(x+k, y+k) == 'V' && k != 1) {
+							etat.ecriture(x+k, y+k, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* diagonale bas-gauche */
 					if(x > 1 && y < taillePlateau-2) {
-						while(y+k < taillePlateau-1  &&  x-k > 0 && etat.getCouleur(x-k, y+k) == cAdversaire) {
+						while(y+k < taillePlateau-1  &&  x-k > 0 && etat.lecture(x-k, y+k) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x-k, y+k) == 'V' && k != 1) {
-							etat.setCouleur(x-k, y+k, 'J');
+						if(etat.lecture(x-k, y+k) == 'V' && k != 1) {
+							etat.ecriture(x-k, y+k, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* diagonale haut-gauche */
 					if(x > 1 && y > 1) {
-						while(y-k > 0 && x-k > 0 && etat.getCouleur(x-k, y-k) == cAdversaire) {
+						while(y-k > 0 && x-k > 0 && etat.lecture(x-k, y-k) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x-k, y-k) == 'V' && k != 1) {
-							etat.setCouleur(x-k, y-k, 'J');
+						if(etat.lecture(x-k, y-k) == 'V' && k != 1) {
+							etat.ecriture(x-k, y-k, 'J');
 							estJouable = true;
 						}
 						k = 1;
 					}
 					/* diagonale haut-droit */
 					if(x < taillePlateau-2 && y > 1 ) {
-						while(x+k < taillePlateau-1 &&  y-k > 0 && etat.getCouleur(x+k, y-k) == cAdversaire) {
+						while(x+k < taillePlateau-1 &&  y-k > 0 && etat.lecture(x+k, y-k) == cAdversaire) {
 							k++;
 						}
-						if(etat.getCouleur(x+k, y-k) == 'V' && k != 1) {
-							etat.setCouleur(x+k, y-k, 'J');
+						if(etat.lecture(x+k, y-k) == 'V' && k != 1) {
+							etat.ecriture(x+k, y-k, 'J');
 							estJouable = true;
 						}
 						k = 1;
@@ -215,7 +215,7 @@ public class PlateauDeJeu {
      * retourne true si le joueur peut jouer à cet endroit
      */
     public boolean estJouable(int i, int j){
-    		if(etat.getCouleur(i,j) == 'J') {
+    		if(etat.lecture(i,j) == 'J') {
     			return true;
     		}
     		return false;
@@ -242,12 +242,12 @@ public class PlateauDeJeu {
      *  permet de jouer un coup
      */
     public void jouer(int i, int j) {
-    		if(etat.getCouleur(i,j) == 'J') {
+    		if(etat.lecture(i,j) == 'J') {
     			if(tourDuJoueurNum == 0) {
-        			etat.setCouleur(i, j, 'N');
+        			etat.ecriture(i, j, 'N');
     			}
     			else{
-        			etat.setCouleur(i, j, 'B');
+        			etat.ecriture(i, j, 'B');
     			}
     			colorer(i,j);
     			if(etat.estFinal()) {
@@ -267,7 +267,7 @@ public class PlateauDeJeu {
     */
     public void colorer(int x, int y) {
     		int i = 1;
-    		char couleur = etat.getCouleur(x, y);
+    		char couleur = etat.lecture(x, y);
     		char couleurOpposee;
     		if(couleur == 'N') {
     			couleurOpposee = 'B';
@@ -276,97 +276,97 @@ public class PlateauDeJeu {
     			couleurOpposee = 'N';
     		}		
 		/* ligne en bas */
-		if(y < taillePlateau-2 && etat.getCouleur(x,y+i) == couleurOpposee) {
-			while(y+i < taillePlateau-1 && etat.getCouleur(x, y+i) == couleurOpposee) {
+		if(y < taillePlateau-2 && etat.lecture(x,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && etat.lecture(x, y+i) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x, y+i) == couleur) {
+			if(etat.lecture(x, y+i) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x, y+j, couleur);
+					etat.ecriture(x, y+j, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne en haut */
-		if(y > 1 && etat.getCouleur(x,y-i) == couleurOpposee) {
-			while(y-i > 0 && etat.getCouleur(x, y-i) == couleurOpposee) {
+		if(y > 1 && etat.lecture(x,y-i) == couleurOpposee) {
+			while(y-i > 0 && etat.lecture(x, y-i) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x, y-i) == couleur) {
+			if(etat.lecture(x, y-i) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x, y-j, couleur);
+					etat.ecriture(x, y-j, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne droite */
-		if(x < taillePlateau-2 && etat.getCouleur(x+i,y) == couleurOpposee) {
-			while(x+i < taillePlateau-1 && etat.getCouleur(x+i, y) == couleurOpposee) {
+		if(x < taillePlateau-2 && etat.lecture(x+i,y) == couleurOpposee) {
+			while(x+i < taillePlateau-1 && etat.lecture(x+i, y) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x+i, y) == couleur) {
+			if(etat.lecture(x+i, y) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x+j, y, couleur);
+					etat.ecriture(x+j, y, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne gauche */
-		if(x > 1 && etat.getCouleur(x-i,y) == couleurOpposee) {
-			while(x-i > 0 && etat.getCouleur(x-i, y) == couleurOpposee) {
+		if(x > 1 && etat.lecture(x-i,y) == couleurOpposee) {
+			while(x-i > 0 && etat.lecture(x-i, y) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x-i, y) == couleur) {
+			if(etat.lecture(x-i, y) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x-j, y, couleur);
+					etat.ecriture(x-j, y, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne en diagonale droite-bas*/
-		if(y < taillePlateau-2 && x < taillePlateau-2 && etat.getCouleur(x+i,y+i) == couleurOpposee) {
-			while(y+i < taillePlateau-1 && x+i < taillePlateau-1 && etat.getCouleur(x+i, y+i) == couleurOpposee) {
+		if(y < taillePlateau-2 && x < taillePlateau-2 && etat.lecture(x+i,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && x+i < taillePlateau-1 && etat.lecture(x+i, y+i) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x+i, y+i) == couleur) {
+			if(etat.lecture(x+i, y+i) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x+j, y+j, couleur);
+					etat.ecriture(x+j, y+j, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne en diagonale droite-haut */
-		if(y > 1 && x < taillePlateau-2 && etat.getCouleur(x+i,y-i) == couleurOpposee) {
-			while(y-i > 0 && x+i < taillePlateau-2 && etat.getCouleur(x+i, y-i) == couleurOpposee) {
+		if(y > 1 && x < taillePlateau-2 && etat.lecture(x+i,y-i) == couleurOpposee) {
+			while(y-i > 0 && x+i < taillePlateau-2 && etat.lecture(x+i, y-i) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x+i, y-i) == couleur) {
+			if(etat.lecture(x+i, y-i) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x+j, y-j, couleur);
+					etat.ecriture(x+j, y-j, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne gauche-bas */
-		if(y < taillePlateau-2 && x > 1 && etat.getCouleur(x-i,y+i) == couleurOpposee) {
-			while(y+i < taillePlateau-1 && x-i > 0 && etat.getCouleur(x-i, y+i) == couleurOpposee) {
+		if(y < taillePlateau-2 && x > 1 && etat.lecture(x-i,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && x-i > 0 && etat.lecture(x-i, y+i) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x-i, y+i) == couleur) {
+			if(etat.lecture(x-i, y+i) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x-j, y+j, couleur);
+					etat.ecriture(x-j, y+j, couleur);
 				}
 			}
 			i = 1;
 		}
 		/* ligne gauche-haut */
-		if(y > 1 && x > 1 && etat.getCouleur(x-i,y-i) == couleurOpposee) {
-			while(y-i > 0 && x-i > 0 && etat.getCouleur(x-i, y-i) == couleurOpposee) {
+		if(y > 1 && x > 1 && etat.lecture(x-i,y-i) == couleurOpposee) {
+			while(y-i > 0 && x-i > 0 && etat.lecture(x-i, y-i) == couleurOpposee) {
 				i++;
 			}
-			if(etat.getCouleur(x-i, y-i) == couleur) {
+			if(etat.lecture(x-i, y-i) == couleur) {
 				for(int j = 1 ; j < i ; j++) {
-					etat.setCouleur(x-j, y-j, couleur);
+					etat.ecriture(x-j, y-j, couleur);
 				}
 			}
 			i = 1;
@@ -394,7 +394,7 @@ public class PlateauDeJeu {
 	    	else{
 			for(int i = 0 ; i < taille ; i++){
 				for(int j = 0 ; j < taille ; j++) {
-					if(tableauATester[i][j].getCouleur() != etat.getCouleur(i, j)){
+					if(tableauATester[i][j].getCouleur() != etat.lecture(i, j)){
 						return false;
 					}
 				}
@@ -407,7 +407,7 @@ public class PlateauDeJeu {
      * retourne vrai si la case ne contient pas de pion
      */
     public boolean isEmpty(int i, int j){
-    		if( etat.getCouleur(i, j) == 'V'  ) {
+    		if( etat.lecture(i, j) == 'V'  ) {
     			return true;
     		}
     		return false;
@@ -448,7 +448,7 @@ public class PlateauDeJeu {
   		for(int y = 0 ; y < taillePlateau ; y++){
   			spb.append("|");
   			for(int x = 0 ; x < taillePlateau ; x++) {
-  				spb.append("|"+ etat.getCouleur(x, y));
+  				spb.append("|"+ etat.lecture(x, y));
   			}
   			spb.append("||");
   			spb.append("\n");

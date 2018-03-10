@@ -41,8 +41,7 @@ public class VueJeu extends JPanel implements Vue {
 	    for (int x = 0 ; x < modele.getTaille() ; x++) {
 	        for (int y = 0 ; y < modele.getTaille(); y++) {
 	            grilleBouton[x][y] = new JButton();
-	            grilleBouton[x][y].setBackground(Color.GREEN);
-
+	            grilleBouton[x][y].setBackground(Color.LIGHT_GRAY);
 	        }
 	    }
 	}
