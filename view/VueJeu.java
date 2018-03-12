@@ -68,7 +68,6 @@ public class VueJeu extends JPanel implements Vue {
 			/* MAJ des valeur des cases */
 			for(int i = 0 ; i < taille ; i++){
 				for(int j = 0 ; j < taille ; j++) {
-					if(!modele.isEmpty(i, j)) {
 						if(modele.getCouleur(i, j) == 'B'){
 							grilleBouton[i][j].setIcon(PictureFactory.pionBlanc);
 						}
@@ -79,9 +78,8 @@ public class VueJeu extends JPanel implements Vue {
 							grilleBouton[i][j].setIcon(PictureFactory.Jouable);
 						}
 						else{
-							grilleBouton[i][j].removeAll();
+							grilleBouton[i][j].setIcon(null);
 						}
-					}
 				}
 			}
 		}

@@ -336,7 +336,7 @@ public class PlateauDeJeu {
 		}
 		/* ligne en diagonale droite-haut */
 		if(y > 1 && x < taillePlateau-2 && etat.lecture(x+i,y-i) == couleurOpposee) {
-			while(y-i > 0 && x+i < taillePlateau-2 && etat.lecture(x+i, y-i) == couleurOpposee) {
+			while(y-i > 0 && x+i < taillePlateau-1 && etat.lecture(x+i, y-i) == couleurOpposee) {
 				i++;
 			}
 			if(etat.lecture(x+i, y-i) == couleur) {
