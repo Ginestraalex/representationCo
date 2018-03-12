@@ -30,6 +30,17 @@ public class EtatOthello extends Etat{
 		ecriture(taille/2, taille/2, 'N');
 	}
 	
+	public EtatOthello(EtatOthello e){
+		plateauJeu = new Pion[e.plateauJeu.length][e.plateauJeu.length];
+		for(int i = 0 ; i < plateauJeu.length; i++) {
+			for(int j = 0 ; j < plateauJeu.length ; j++) {
+				plateauJeu[i][j] = new Pion(e.plateauJeu[i][j].getCouleur());
+			}
+		}
+		this.nbPionsBlancs = e.nbPionsBlancs;
+		this.nbPionsNoirs = e.nbPionsNoirs;
+	}
+	
 	
 	/*
 	 * retourne le numéro du joueur vaiqueur:
@@ -65,10 +76,25 @@ public class EtatOthello extends Etat{
 		return false;
 	}
 	
-	@Override
-	public ArrayList<Etat> successeurs() {
-		ArrayList<Etat> listeEtats = new ArrayList<Etat>();
-		return null;
+	public ArrayList<EtatOthello> successeurs() {
+		ArrayList<EtatOthello> listeEtats = new ArrayList<EtatOthello>();
+		for(int i = 0 ; i < plateauJeu.length ; i++){
+			for(int j = 0 ; j < plateauJeu.length ; j++){
+				if(plateauJeu[i][j].getCouleur() == 'J'){
+					EtatOthello e = new EtatOthello(this);
+					int k = listeEtats.size();
+					int l = 0 ;
+					boolean ajoute = false;
+					while(l < k && !ajoute){
+						if(!listeEtats.get(l).estEgal(e)){
+							ajoute = true;
+							listeEtats.add(e);
+						}
+					}
+				}
+			}
+		}
+		return listeEtats;
 	}
 
 
