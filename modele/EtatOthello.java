@@ -66,8 +66,8 @@ public class EtatOthello extends Etat{
 	}
 	
 	@Override
-	public ArrayList<Etat> successeurs(Joueur j) {
-		// TODO Auto-generated method stub
+	public ArrayList<Etat> successeurs() {
+		ArrayList<Etat> listeEtats = new ArrayList<Etat>();
 		return null;
 	}
 
@@ -103,7 +103,30 @@ public class EtatOthello extends Etat{
 	public boolean estEgal(EtatOthello e) {
 		/* symetrie axiale et rotative a faire */
 		if( this.nbPionsBlancs == e.nbPionsBlancs && this.nbPionsNoirs == e.nbPionsNoirs && joueur == e.joueur) {
-			return true;
+			int i = 0;
+			int j = 0 ;
+			int taille = plateauJeu.length;
+			boolean symCentrale = true;
+			boolean egal = true;
+			while((symCentrale || egal) && i < taille){
+				while ((symCentrale || egal) && j < taille){
+					/* egalite simple */
+					if(plateauJeu[i][j].getCouleur() != e.plateauJeu[i][j].getCouleur()){
+						egal = false;
+					}
+					/* symétrie centrale */
+					if(plateauJeu[i][j].getCouleur() != e.plateauJeu[taille-1-i][taille-1-j].getCouleur())
+					{
+						symCentrale = false;
+					}
+					j++;
+				}
+				i++;
+				j = 0;
+			}
+			if(egal || symCentrale){
+				return true;
+			}
 		}
 		return false;
 	}
