@@ -10,6 +10,8 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import representationCo.view.VueJeu;
 import representationCo.menu.MenuBar;
+import representationCo.modele.EtatOthello;
+import representationCo.modele.JoueurOthello;
 import representationCo.modele.PlateauDeJeu;
 
 
@@ -25,7 +27,7 @@ public class Jeu extends JFrame{
 		this.setLocationRelativeTo(null);
 		
 		/* resoud le probleme d'affichage sous mac */
-		//UIManager.setLookAndFeel(new MetalLookAndFeel());
+		UIManager.setLookAndFeel(new MetalLookAndFeel());
 
 		
 		modele = new PlateauDeJeu();
@@ -48,6 +50,5 @@ public class Jeu extends JFrame{
 	
 	public static void main(String[] args) throws UnsupportedLookAndFeelException {
 		Jeu reversi = new Jeu();
-		System.out.println(reversi.toString());
 	}
 }

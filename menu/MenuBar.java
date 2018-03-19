@@ -17,12 +17,17 @@ public class MenuBar extends JMenuBar implements Vue{
 	public JMenu paramPartie;
 	public JMenuItem ajouterJoueur;
 	public JMenuItem nouvellePartie;
+	public JMenuItem affichageScore;
+
+	
 	
 	public MenuBar(PlateauDeJeu mod) {
 		modele = mod;
 		paramPartie = new JMenu("Parametres");
 		ajouterJoueur = new JMenuItem("Ajouter Joueur");
 		nouvellePartie = new JMenuItem("Nouvelle Partie");
+		affichageScore = new JMenuItem("Afficher Score");
+
 
 		ajouterJoueur.addActionListener(new ActionListener() {
 			@Override
@@ -45,8 +50,18 @@ public class MenuBar extends JMenuBar implements Vue{
 			}
 		});
 		
+		affichageScore.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(null, "Les scores sont:\n"
+							+modele.getNomJoueur(0)+" score: "+modele.getScore(0)+" victoires\n"
+							+modele.getNomJoueur(1)+" score: "+modele.getScore(1)+" victoires");
+			}
+		});
+		
 		paramPartie.add(ajouterJoueur);
 		paramPartie.add(nouvellePartie);
+		paramPartie.add(affichageScore);
 		add(paramPartie);	
 	}
 

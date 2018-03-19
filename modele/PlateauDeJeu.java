@@ -83,6 +83,21 @@ public class PlateauDeJeu {
     }
     
     /*
+     * retourne le nom du joueur numéro index
+     */
+    public String getNomJoueur(int index) {
+    		return tableauJoueurs[index].getNom();
+    }
+    
+    /*
+     * retourne le nombre de partie gagnee pas le joueur numero index
+     */
+    public int getScore(int index) {
+    		return tableauJoueurs[index].getGagne();
+    }
+    
+    
+    /*
      * fonction remplissant le tableau de jeu en fonction de la jouabilité
      * du joueur courrant
      */

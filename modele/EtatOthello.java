@@ -167,4 +167,14 @@ public class EtatOthello extends Etat{
 		}
 	}
 	
+	
+	public void main() {
+		JoueurOthello j1 = new JoueurOthello("j1");
+		JoueurOthello j2 = new JoueurOthello("j2");
+		EtatOthello e1 = new EtatOthello(8);
+		e1.setTourJoueur(j1);
+		EtatOthello e2 = new EtatOthello(8);
+		e2.setTourJoueur(j2);
+		System.out.println("res = "+e1.estEgal(e2));
+	}
 }
