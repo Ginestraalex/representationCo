@@ -10,6 +10,8 @@ public class EtatOthello extends Etat{
 	int nbPionsNoirs;
 	int nbPionsBlancs;
 	public JoueurOthello joueur;
+	public boolean tourPrecedentPasse;
+	public boolean estFinal; 
 	
 	public EtatOthello() {
 		
@@ -28,6 +30,8 @@ public class EtatOthello extends Etat{
 		ecriture(taille/2-1, taille/2, 'B');
 		ecriture(taille/2, taille/2-1, 'B');
 		ecriture(taille/2, taille/2, 'N');
+		tourPrecedentPasse = false;
+		estFinal = false;
 	}
 	
 	public EtatOthello(EtatOthello e){
@@ -39,6 +43,8 @@ public class EtatOthello extends Etat{
 		}
 		this.nbPionsBlancs = e.nbPionsBlancs;
 		this.nbPionsNoirs = e.nbPionsNoirs;
+		this.tourPrecedentPasse = e.tourPrecedentPasse;
+		this.estFinal = e.estFinal;
 	}
 	
 	
@@ -66,15 +72,139 @@ public class EtatOthello extends Etat{
 		joueur = j;
 	}
 	
-	/*
-	 * test si l'etat est final (si le plateau est rempli)
-	 */
-	public boolean estFinal() {
-		if( (nbPionsBlancs + nbPionsNoirs) == plateauJeu.length*plateauJeu.length ) {
-			return true;
+	
+	 /*
+     * fonction remplissant le tableau de jeu en fonction de la jouabilité
+     * du joueur courrant
+     */
+    public void calculJouabilite(){
+    		int taillePlateau = plateauJeu.length;
+    		for(int y = 0 ; y < taillePlateau ; y++) {
+    			for(int x = 0 ; x < taillePlateau ; x++) {
+    				if(lecture(x, y) == 'J') {
+    					ecriture(x, y, 'V');
+    				}
+    			}
+    		}
+    		boolean estJouable = false;
+    		char cJoueur;
+    		char cAdversaire;
+    		int k = 1;
+    		if(joueur.getCouleur() == 'N') { //tour joueur noir
+    			cJoueur = 'N';
+    			cAdversaire = 'B';
+    		}
+    		else {	//tour joueur blanc
+    			cJoueur = 'B';
+    			cAdversaire = 'N';
+    		}
+		for(int y = 0 ; y < taillePlateau ; y++) {
+			for(int x = 0 ; x < taillePlateau ; x++) {
+				if(lecture(x, y) == cJoueur) {
+					/* ligne vers droite */
+					if(x < taillePlateau-2) {
+						while(x+k < taillePlateau-1 && lecture(x+k, y) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x+k, y) == 'V' && k != 1) {
+							ecriture(x+k, y, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* ligne vers gauche */
+					if(x > 1) {
+						while(x-k > 0 && lecture(x-k, y) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x-k, y) == 'V' && k != 1) {
+							ecriture(x-k, y, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* ligne vers bas */
+					if(y < taillePlateau-2) {
+						while(y+k < taillePlateau-1 && lecture(x, y+k) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x, y+k) == 'V' && k != 1) {
+							ecriture(x, y+k, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* ligne vers le haut */
+					if(y > 1) {
+						while(y-k > 0 && lecture(x, y-k) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x, y-k) == 'V' && k != 1) {
+							ecriture(x, y-k, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* diagonale bas-droit */
+					if(x < taillePlateau-2 && y < taillePlateau-2 ) {
+						while(y+k < taillePlateau-1  &&  x+k < taillePlateau-1 && lecture(x+k, y+k) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x+k, y+k) == 'V' && k != 1) {
+							ecriture(x+k, y+k, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* diagonale bas-gauche */
+					if(x > 1 && y < taillePlateau-2) {
+						while(y+k < taillePlateau-1  &&  x-k > 0 && lecture(x-k, y+k) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x-k, y+k) == 'V' && k != 1) {
+							ecriture(x-k, y+k, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* diagonale haut-gauche */
+					if(x > 1 && y > 1) {
+						while(y-k > 0 && x-k > 0 && lecture(x-k, y-k) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x-k, y-k) == 'V' && k != 1) {
+							ecriture(x-k, y-k, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+					/* diagonale haut-droit */
+					if(x < taillePlateau-2 && y > 1 ) {
+						while(x+k < taillePlateau-1 &&  y-k > 0 && lecture(x+k, y-k) == cAdversaire) {
+							k++;
+						}
+						if(lecture(x+k, y-k) == 'V' && k != 1) {
+							ecriture(x+k, y-k, 'J');
+							estJouable = true;
+						}
+						k = 1;
+					}
+				}
+			}
 		}
-		return false;
-	}
+		/* si le joueur ne peut pas jouer, il passe son tour */
+		if(!estJouable && tourPrecedentPasse) {
+			estFinal = true;
+		}
+		else if(!estJouable) {
+			tourPrecedentPasse = true;
+		}else {
+			tourPrecedentPasse = false;
+		}
+    }
+	
+	
+	
 	
 	public ArrayList<EtatOthello> successeurs() {
 		ArrayList<EtatOthello> listeEtats = new ArrayList<EtatOthello>();
@@ -115,16 +245,41 @@ public class EtatOthello extends Etat{
 	
 	
 	
-	private int evalutation(int c, EtatOthello eTemp) {
-
+	private int evalutation(int c, EtatOthello e) {
+		if(e.estFinal()) {
+			//if()
+		}
 		return 0;
 	}
 
+	
 	/*
 	 * retourne la couleur de la case
 	 */
 	public char lecture(int x, int y) {
 		return plateauJeu[x][y].getCouleur();
+	}
+	
+	
+	
+	/*
+	 * defini le caractere de la couelur du joueur dans la case du plateau de jeu
+	 */
+	public void ecriture(int x, int y) {
+		char laCouleur = joueur.getCouleur();
+		if(laCouleur == 'N') {
+			if(this.plateauJeu[x][y].getCouleur() == 'B') {
+				nbPionsBlancs--;
+			}
+			this.nbPionsNoirs++;
+		}
+		else if(laCouleur == 'B') {
+			if(this.plateauJeu[x][y].getCouleur() == 'N') {
+				nbPionsNoirs--;
+			}
+			this.nbPionsBlancs++;
+		}
+		plateauJeu[x][y].setCouleur(laCouleur);
 	}
 	
 	
@@ -145,6 +300,17 @@ public class EtatOthello extends Etat{
 			this.nbPionsBlancs++;
 		}
 		plateauJeu[x][y].setCouleur(laCouleur);
+	}
+	
+	
+	/*
+	 * test si l'etat est final (si le plateau est rempli)
+	 */
+	public boolean estFinal() {
+		if( (nbPionsBlancs + nbPionsNoirs) == plateauJeu.length*plateauJeu.length  || estFinal) {
+			return true;
+		}
+		return false;
 	}
 
 	public boolean estEgal(EtatOthello e) {
@@ -186,16 +352,5 @@ public class EtatOthello extends Etat{
 			}
 			System.out.println("");
 		}
-	}
-	
-	
-	public void main() {
-		JoueurOthello j1 = new JoueurOthello("j1");
-		JoueurOthello j2 = new JoueurOthello("j2");
-		EtatOthello e1 = new EtatOthello(8);
-		e1.setTourJoueur(j1);
-		EtatOthello e2 = new EtatOthello(8);
-		e2.setTourJoueur(j2);
-		System.out.println("res = "+e1.estEgal(e2));
 	}
 }

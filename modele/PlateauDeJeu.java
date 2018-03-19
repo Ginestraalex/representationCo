@@ -13,28 +13,25 @@ public class PlateauDeJeu {
 	private int tourDuJoueurNum;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
-    private boolean tourJoueurPrecedPasse; //variable de détection si le jeu est bloqué
     
     public PlateauDeJeu() {
     		tableauJoueurs = new JoueurOthello[2];
-    		tableauJoueurs[0] = new JoueurOthello("Joueur 1");
-    		tableauJoueurs[1] = new JoueurOthello("Joueur 2");
+    		tableauJoueurs[0] = new JoueurOthello("Joueur 1", 'N');
+    		tableauJoueurs[1] = new JoueurOthello("Joueur 2", 'B');
     		tourDuJoueurNum = 0;
-    		tourJoueurPrecedPasse = false;
     		vues = new ArrayList<Vue>();
     		nouvellePartie(8);
-    		this.calculJouabilite();
+    		etat.calculJouabilite();
     }
     
     public PlateauDeJeu(int taille) {
     		tableauJoueurs = new JoueurOthello[2];
-    		tableauJoueurs[0] = new JoueurOthello("Joueur 1");
-    		tableauJoueurs[1] = new JoueurOthello("Joueur 2");
+    		tableauJoueurs[0] = new JoueurOthello("Joueur 1", 'N');
+    		tableauJoueurs[1] = new JoueurOthello("Joueur 2", 'B');
     		tourDuJoueurNum = 0;
-    		tourJoueurPrecedPasse = false;
     		vues = new ArrayList<Vue>();
     		nouvellePartie(taille);
-    		calculJouabilite();
+    		etat.calculJouabilite();
     }
     
     
@@ -56,12 +53,11 @@ public class PlateauDeJeu {
 		if(nomJoueurARemplacer != null) {
 			String nom = JOptionPane.showInputDialog("Quel est votre nom", "Ajout nouveau joueur");
 			if(nom != null) {
-				JoueurOthello j = new JoueurOthello(nom);
 		    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
-		    			tableauJoueurs[0] = j;
+		    			tableauJoueurs[0] = new JoueurOthello(nom, tableauJoueurs[0].getCouleur());;
 		    		}
 		    		else {
-		        		tableauJoueurs[1] = j;
+		        		tableauJoueurs[1] = new JoueurOthello(nom, tableauJoueurs[1].getCouleur());
 		    		}
 			}
 		}
@@ -74,6 +70,7 @@ public class PlateauDeJeu {
 		return taillePlateau;
     	}
     
+    
     /*
      * retorune la couleur du pion(si il y en a un)
      * se trouvant dans la case de coordonnée (i,j)
@@ -82,12 +79,14 @@ public class PlateauDeJeu {
     		return etat.lecture(i, j);
     }
     
+    
     /*
      * retourne le nom du joueur numéro index
      */
     public String getNomJoueur(int index) {
     		return tableauJoueurs[index].getNom();
     }
+    
     
     /*
      * retourne le nombre de partie gagnee pas le joueur numero index
@@ -96,134 +95,6 @@ public class PlateauDeJeu {
     		return tableauJoueurs[index].getGagne();
     }
     
-    
-    /*
-     * fonction remplissant le tableau de jeu en fonction de la jouabilité
-     * du joueur courrant
-     */
-    public void calculJouabilite(){
-    		for(int y = 0 ; y < taillePlateau ; y++) {
-    			for(int x = 0 ; x < taillePlateau ; x++) {
-    				if(etat.lecture(x, y) == 'J') {
-    					etat.ecriture(x, y, 'V');
-    				}
-    			}
-    		}
-    		boolean estJouable = false;
-    		char cJoueur;
-    		char cAdversaire;
-    		int k = 1;
-    		if(tourDuJoueurNum == 0) { //tour joueur noir
-    			cJoueur = 'N';
-    			cAdversaire = 'B';
-    		}
-    		else {	//tour joueur blanc
-    			cJoueur = 'B';
-    			cAdversaire = 'N';
-    		}
-		for(int y = 0 ; y < taillePlateau ; y++) {
-			for(int x = 0 ; x < taillePlateau ; x++) {
-				if(etat.lecture(x, y) == cJoueur) {
-					/* ligne vers droite */
-					if(x < taillePlateau-2) {
-						while(x+k < taillePlateau-1 && etat.lecture(x+k, y) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x+k, y) == 'V' && k != 1) {
-							etat.ecriture(x+k, y, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* ligne vers gauche */
-					if(x > 1) {
-						while(x-k > 0 && etat.lecture(x-k, y) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x-k, y) == 'V' && k != 1) {
-							etat.ecriture(x-k, y, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* ligne vers bas */
-					if(y < taillePlateau-2) {
-						while(y+k < taillePlateau-1 && etat.lecture(x, y+k) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x, y+k) == 'V' && k != 1) {
-							etat.ecriture(x, y+k, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* ligne vers le haut */
-					if(y > 1) {
-						while(y-k > 0 && etat.lecture(x, y-k) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x, y-k) == 'V' && k != 1) {
-							etat.ecriture(x, y-k, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* diagonale bas-droit */
-					if(x < taillePlateau-2 && y < taillePlateau-2 ) {
-						while(y+k < taillePlateau-1  &&  x+k < taillePlateau-1 && etat.lecture(x+k, y+k) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x+k, y+k) == 'V' && k != 1) {
-							etat.ecriture(x+k, y+k, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* diagonale bas-gauche */
-					if(x > 1 && y < taillePlateau-2) {
-						while(y+k < taillePlateau-1  &&  x-k > 0 && etat.lecture(x-k, y+k) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x-k, y+k) == 'V' && k != 1) {
-							etat.ecriture(x-k, y+k, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* diagonale haut-gauche */
-					if(x > 1 && y > 1) {
-						while(y-k > 0 && x-k > 0 && etat.lecture(x-k, y-k) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x-k, y-k) == 'V' && k != 1) {
-							etat.ecriture(x-k, y-k, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-					/* diagonale haut-droit */
-					if(x < taillePlateau-2 && y > 1 ) {
-						while(x+k < taillePlateau-1 &&  y-k > 0 && etat.lecture(x+k, y-k) == cAdversaire) {
-							k++;
-						}
-						if(etat.lecture(x+k, y-k) == 'V' && k != 1) {
-							etat.ecriture(x+k, y-k, 'J');
-							estJouable = true;
-						}
-						k = 1;
-					}
-				}
-			}
-		}
-		/* si le joueur ne peut pas jouer, il passe son tour */
-		if(!estJouable && tourJoueurPrecedPasse) {
-			finDeLaPartie();
-		}
-		else if(!estJouable) {
-			tourJoueurPrecedPasse = true;
-			joueurSuivant();
-		}
-    }
     
     
     /*
@@ -250,20 +121,21 @@ public class PlateauDeJeu {
 			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[1].getNom());
 			etat.setTourJoueur(tableauJoueurs[1]);
 		}
-		calculJouabilite();
+		etat.calculJouabilite();
+		/* si le joueur n'a pas de solution pour jouer, on passe son tour */
+		if(!etat.estFinal && etat.tourPrecedentPasse) {
+			JOptionPane.showMessageDialog(null, etat.joueur.getNom()+" ne peut pas jouer, il passe son tour.");
+			joueurSuivant();
+		}
     }
+    
     
     /*
      *  permet de jouer un coup
      */
     public void jouer(int i, int j) {
     		if(etat.lecture(i,j) == 'J') {
-    			if(tourDuJoueurNum == 0) {
-        			etat.ecriture(i, j, 'N');
-    			}
-    			else{
-        			etat.ecriture(i, j, 'B');
-    			}
+    			etat.ecriture(i, j);
     			colorer(i,j);
     			if(etat.estFinal()) {
     				finDeLaPartie();
