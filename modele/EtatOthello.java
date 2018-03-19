@@ -98,7 +98,28 @@ public class EtatOthello extends Etat{
 	}
 
 
+	public EtatOthello minimax(EtatOthello e, int c) {
+		ArrayList<EtatOthello> listeEtat = this.successeurs();
+		int score;
+		int score_max = Integer.MIN_VALUE;
+		EtatOthello e_sortie = null;
+		for(EtatOthello eTemp : listeEtat) {
+			score = evalutation(c, eTemp);
+			if(score >= score_max) {
+				e_sortie = eTemp;
+				score_max = score;
+			}
+		}
+		return e_sortie;
+	}
 	
+	
+	
+	private int evalutation(int c, EtatOthello eTemp) {
+
+		return 0;
+	}
+
 	/*
 	 * retourne la couleur de la case
 	 */
