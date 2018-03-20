@@ -230,11 +230,11 @@ public class EtatOthello extends Etat{
 
 	public EtatOthello minimax(EtatOthello e, int c) {
 		ArrayList<EtatOthello> listeEtat = this.successeurs();
+		EtatOthello e_sortie = null;
 		int score;
 		int score_max = Integer.MIN_VALUE;
-		EtatOthello e_sortie = null;
 		for(EtatOthello eTemp : listeEtat) {
-			score = evalutation(c, eTemp);
+			score = evaluation(c, eTemp);
 			if(score >= score_max) {
 				e_sortie = eTemp;
 				score_max = score;
@@ -245,11 +245,53 @@ public class EtatOthello extends Etat{
 	
 	
 	
-	private int evalutation(int c, EtatOthello e) {
+	private int evaluation(int c, EtatOthello e) {
 		if(e.estFinal()) {
-			//if()
+			if(nbPionsNoirs == nbPionsBlancs) {
+				return 0;
+			}
+			else if(nbPionsNoirs < nbPionsBlancs) {
+				if(joueur.getCouleur() == 'N') {
+					return Integer.MIN_VALUE;
+				}
+				else {
+					return Integer.MAX_VALUE;
+				}
+			}
+			else {
+				if(joueur.getCouleur() == 'N') {
+					return Integer.MAX_VALUE;
+				}
+				else {
+					return Integer.MIN_VALUE;
+				}
+			}
 		}
-		return 0;
+		ArrayList<EtatOthello> listeEtat = new ArrayList<EtatOthello>();
+		if(c == 0) {
+			return 0;
+		}
+		int score;
+		if(joueur.getNom().equals("Ordinateur")) {
+			int scoreMax = Integer.MIN_VALUE;
+			for(EtatOthello eTemp : listeEtat) {
+				score = evaluation(c-1, eTemp);
+				if(score > scoreMax) {
+					scoreMax = score;
+				}
+			}
+			return scoreMax;
+		}
+		else {
+			int scoreMin = Integer.MAX_VALUE;
+			for(EtatOthello eTemp : listeEtat) {
+				score = evaluation(c-1, eTemp);
+				if(score < scoreMin) {
+					scoreMin = score;
+				}
+			}
+			return scoreMin;
+		}
 	}
 
 	
