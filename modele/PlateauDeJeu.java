@@ -154,13 +154,19 @@ public class PlateauDeJeu {
 			etat.setTourJoueur(tableauJoueurs[1]);
 		}
 		etat.calculJouabilite();
-		if(etat.joueur.isOrdinateur()){
-			etat = etat.minimax(1);
-		}
 		/* si le joueur n'a pas de solution pour jouer, on passe son tour */
 		if(!etat.estFinal && etat.tourPrecedentPasse) {
 			JOptionPane.showMessageDialog(null, etat.joueur.getNom()+" ne peut pas jouer, il passe son tour.");
 			joueurSuivant();
+		}
+		else {
+			if(etat.joueur.isOrdinateur()){
+				etat.affichage();
+				System.out.println();
+				etat = etat.minimax(1);
+				etat.affichage();
+				joueurSuivant();
+			}
 		}
     }
     
@@ -180,6 +186,13 @@ public class PlateauDeJeu {
             		maj();	
     			}
     		}
+    }
+    
+    public static void jouer(EtatOthello e, int i, int j) {
+	    	if(e.lecture(i,j) == 'J') {
+			e.ecriture(i, j);
+			PlateauDeJeu.colorer(e, i,j);
+	    }
     }
     
    /*
@@ -293,6 +306,119 @@ public class PlateauDeJeu {
 			i = 1;
 		}
     }
+    
+    
+    public static void colorer(EtatOthello e, int x, int y) {
+		int i = 1;
+		char couleur = e.lecture(x, y);
+		char couleurOpposee;
+		if(couleur == 'N') {
+			couleurOpposee = 'B';
+		}
+		else {
+			couleurOpposee = 'N';
+		}	
+		int taillePlateau = e.getSize();
+		/* ligne en bas */
+		if(y < taillePlateau-2 && e.lecture(x,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && e.lecture(x, y+i) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x, y+i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x, y+j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne en haut */
+		if(y > 1 && e.lecture(x,y-i) == couleurOpposee) {
+			while(y-i > 0 && e.lecture(x, y-i) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x, y-i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x, y-j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne droite */
+		if(x < taillePlateau-2 && e.lecture(x+i,y) == couleurOpposee) {
+			while(x+i < taillePlateau-1 && e.lecture(x+i, y) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x+i, y) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x+j, y, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne gauche */
+		if(x > 1 && e.lecture(x-i,y) == couleurOpposee) {
+			while(x-i > 0 && e.lecture(x-i, y) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x-i, y) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x-j, y, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne en diagonale droite-bas*/
+		if(y < taillePlateau-2 && x < taillePlateau-2 && e.lecture(x+i,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && x+i < taillePlateau-1 && e.lecture(x+i, y+i) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x+i, y+i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x+j, y+j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne en diagonale droite-haut */
+		if(y > 1 && x < taillePlateau-2 && e.lecture(x+i,y-i) == couleurOpposee) {
+			while(y-i > 0 && x+i < taillePlateau-1 && e.lecture(x+i, y-i) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x+i, y-i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x+j, y-j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne gauche-bas */
+		if(y < taillePlateau-2 && x > 1 && e.lecture(x-i,y+i) == couleurOpposee) {
+			while(y+i < taillePlateau-1 && x-i > 0 && e.lecture(x-i, y+i) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x-i, y+i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x-j, y+j, couleur);
+				}
+			}
+			i = 1;
+		}
+		/* ligne gauche-haut */
+		if(y > 1 && x > 1 && e.lecture(x-i,y-i) == couleurOpposee) {
+			while(y-i > 0 && x-i > 0 && e.lecture(x-i, y-i) == couleurOpposee) {
+				i++;
+			}
+			if(e.lecture(x-i, y-i) == couleur) {
+				for(int j = 1 ; j < i ; j++) {
+					e.ecriture(x-j, y-j, couleur);
+				}
+			}
+			i = 1;
+		}
+	}
+    
+    
+    
     
     /*
      * création d'une nouvelle partie

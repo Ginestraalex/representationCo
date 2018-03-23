@@ -45,6 +45,7 @@ public class EtatOthello extends Etat{
 		this.nbPionsNoirs = e.nbPionsNoirs;
 		this.tourPrecedentPasse = e.tourPrecedentPasse;
 		this.estFinal = e.estFinal;
+		this.joueur = e.joueur;
 	}
 	
 	
@@ -62,6 +63,10 @@ public class EtatOthello extends Etat{
 			return 0;
 		}
 		return 2;
+	}
+	
+	public int getSize() {
+		return plateauJeu.length;
 	}
 	
 	
@@ -213,14 +218,15 @@ public class EtatOthello extends Etat{
 			for(int j = 0 ; j < plateauJeu.length ; j++){
 				if(plateauJeu[i][j].getCouleur() == 'J'){
 					EtatOthello e = new EtatOthello(this);
-					int k = listeEtats.size();
-					int l = 0 ;
-					boolean ajoute = false;
-					while(l < k && !ajoute){//ici erreur + retournement de la cible jeu de base
-						if(!listeEtats.get(l).estEgal(e)){
-							ajoute = true;
-							listeEtats.add(e);
+					PlateauDeJeu.jouer(e, i, j);
+					boolean inexistant = true;
+					for(EtatOthello eTemp : listeEtats) {
+						if(eTemp.estEgal(e)) {
+							inexistant = false;
 						}
+					}
+					if(inexistant) {
+						listeEtats.add(e);
 					}
 				}
 			}
@@ -239,6 +245,8 @@ public class EtatOthello extends Etat{
 		int score_max = Integer.MIN_VALUE;
 		for(EtatOthello eTemp : listeEtat) {
 			score = evaluation(c, eTemp);
+			System.out.println(""+score);
+			eTemp.affichage();
 			if(score >= score_max) {
 				e_sortie = eTemp;
 				score_max = score;
@@ -375,6 +383,10 @@ public class EtatOthello extends Etat{
 		return false;
 	}
 
+	
+	/*
+	 * teste si deux etats sont egaux, teste la symetrie centrale
+	 */
 	public boolean estEgal(EtatOthello e) {
 		/* symetrie axiale et rotative a faire */
 		if( this.nbPionsBlancs == e.nbPionsBlancs && this.nbPionsNoirs == e.nbPionsNoirs && joueur == e.joueur) {
