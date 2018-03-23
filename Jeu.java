@@ -34,7 +34,7 @@ public class Jeu extends JFrame{
 		VueJeu vuePlateau = new VueJeu(modele);
 		MenuBar menu = new MenuBar(modele);
 		this.setJMenuBar(menu);
-
+		
 		modele.ajouterVue(vuePlateau);
 		modele.ajouterVue(menu);
 		

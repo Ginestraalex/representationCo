@@ -204,8 +204,9 @@ public class EtatOthello extends Etat{
     }
 	
 	
-	
-	
+	/*
+	 * retourne la liste des successeurs possibles d'un état
+	 */
 	public ArrayList<EtatOthello> successeurs() {
 		ArrayList<EtatOthello> listeEtats = new ArrayList<EtatOthello>();
 		for(int i = 0 ; i < plateauJeu.length ; i++){
@@ -228,6 +229,9 @@ public class EtatOthello extends Etat{
 	}
 
 
+	/*
+	 * fonction minimax du cours
+	 */
 	public EtatOthello minimax(EtatOthello e, int c) {
 		ArrayList<EtatOthello> listeEtat = this.successeurs();
 		EtatOthello e_sortie = null;
@@ -243,8 +247,10 @@ public class EtatOthello extends Etat{
 		return e_sortie;
 	}
 	
-	
-	
+
+	/*
+	 * fonction evaluation du cours
+	 */
 	private int evaluation(int c, EtatOthello e) {
 		if(e.estFinal()) {
 			if(nbPionsNoirs == nbPionsBlancs) {
