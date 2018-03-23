@@ -53,13 +53,45 @@ public class PlateauDeJeu {
 		if(nomJoueurARemplacer != null) {
 			String nom = JOptionPane.showInputDialog("Quel est votre nom", "Ajout nouveau joueur");
 			if(nom != null) {
+				if(nom.equals("Ordinateur")){
+    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur (Ordinateur est reserve pour la machine)");
+				}
+				else{
 		    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
-		    			tableauJoueurs[0] = new JoueurOthello(nom, tableauJoueurs[0].getCouleur());;
+		    			if(tableauJoueurs[1].getNom().equals(nom))
+		    			{
+		    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur, le nom existe deja");
+		    				ajouterJoueur();
+		    			}
+		    			else{
+		    				tableauJoueurs[0] = new JoueurOthello(nom, tableauJoueurs[0].getCouleur());
+		    			}
 		    		}
 		    		else {
-		        		tableauJoueurs[1] = new JoueurOthello(nom, tableauJoueurs[1].getCouleur());
+		    			if(tableauJoueurs[0].getNom().equals(nom)){
+		    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur, le nom existe deja");
+		    				ajouterJoueur();
+		    			}
+		    			else{
+		    				tableauJoueurs[1] = new JoueurOthello(nom, tableauJoueurs[1].getCouleur());
+	    				}
 		    		}
+				}
 			}
+		}
+    }
+    
+    public void remplacerJoeurParOrdinateur(){
+    	String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
+		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
+		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui sera remplacé", "Ajout nouveau joueur", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
+		if(nomJoueurARemplacer != null) {
+    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
+    			tableauJoueurs[0].setOrdinateur();
+    		}
+    		else {
+    			tableauJoueurs[1].setOrdinateur();
+    		}
 		}
     }
     
@@ -111,17 +143,20 @@ public class PlateauDeJeu {
      * passe la main au joueur suivant
      */
     public void joueurSuivant() {
-    		tourDuJoueurNum++;
+		tourDuJoueurNum++;
 		tourDuJoueurNum = tourDuJoueurNum % 2;
 		if(tourDuJoueurNum == 0) {
 			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[0].getNom());
-    			etat.setTourJoueur(tableauJoueurs[0]);
+			etat.setTourJoueur(tableauJoueurs[0]);
 		}
 		else if(tourDuJoueurNum == 1 ){
 			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[1].getNom());
 			etat.setTourJoueur(tableauJoueurs[1]);
 		}
 		etat.calculJouabilite();
+		if(etat.joueur.isOrdinateur()){
+			etat = etat.minimax(1);
+		}
 		/* si le joueur n'a pas de solution pour jouer, on passe son tour */
 		if(!etat.estFinal && etat.tourPrecedentPasse) {
 			JOptionPane.showMessageDialog(null, etat.joueur.getNom()+" ne peut pas jouer, il passe son tour.");
@@ -265,8 +300,8 @@ public class PlateauDeJeu {
     public void nouvellePartie(int taille) {
 	    taillePlateau = taille;
 	    tourDuJoueurNum = 1;
-	    	etat = new EtatOthello(taillePlateau);
-	    	joueurSuivant();
+    	etat = new EtatOthello(taillePlateau);
+    	joueurSuivant();
     }
     
     

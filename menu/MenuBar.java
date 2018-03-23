@@ -18,6 +18,7 @@ public class MenuBar extends JMenuBar implements Vue{
 	public JMenuItem ajouterJoueur;
 	public JMenuItem nouvellePartie;
 	public JMenuItem affichageScore;
+	public JMenuItem jouerContreOrdi;
 
 	
 	
@@ -27,12 +28,14 @@ public class MenuBar extends JMenuBar implements Vue{
 		ajouterJoueur = new JMenuItem("Ajouter Joueur");
 		nouvellePartie = new JMenuItem("Nouvelle Partie");
 		affichageScore = new JMenuItem("Afficher Score");
+		jouerContreOrdi = new JMenuItem("Jouer contre l'ordinateur");
 
 
 		ajouterJoueur.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				modele.ajouterJoueur();
+				modele.nouvellePartie(modele.getTaille());
 				modele.maj();
 			}
 		});
@@ -59,8 +62,19 @@ public class MenuBar extends JMenuBar implements Vue{
 			}
 		});
 		
+		jouerContreOrdi.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				modele.remplacerJoeurParOrdinateur();
+				modele.nouvellePartie(modele.getTaille());
+				modele.maj();
+			}
+			
+		});
+		
 		paramPartie.add(ajouterJoueur);
 		paramPartie.add(nouvellePartie);
+		paramPartie.add(jouerContreOrdi);
 		paramPartie.add(affichageScore);
 		add(paramPartie);	
 	}

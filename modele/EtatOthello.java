@@ -232,7 +232,7 @@ public class EtatOthello extends Etat{
 	/*
 	 * fonction minimax du cours
 	 */
-	public EtatOthello minimax(EtatOthello e, int c) {
+	public EtatOthello minimax(int c) {
 		ArrayList<EtatOthello> listeEtat = this.successeurs();
 		EtatOthello e_sortie = null;
 		int score;
@@ -248,6 +248,20 @@ public class EtatOthello extends Etat{
 	}
 	
 
+	
+	/*
+	 * fonction eval 0
+	 */
+	private int eval0(EtatOthello e){
+		if(e.joueur.couleur == 'N'){
+			return nbPionsBlancs;
+		}
+		else{
+			return nbPionsNoirs;
+		}
+	}
+	
+	
 	/*
 	 * fonction evaluation du cours
 	 */
@@ -273,14 +287,14 @@ public class EtatOthello extends Etat{
 				}
 			}
 		}
-		ArrayList<EtatOthello> listeEtat = new ArrayList<EtatOthello>();
+		ArrayList<EtatOthello> S = e.successeurs();
 		if(c == 0) {
-			return 0;
+			return eval0(e);
 		}
 		int score;
-		if(joueur.getNom().equals("Ordinateur")) {
+		if(!joueur.getNom().equals("Ordinateur")) {
 			int scoreMax = Integer.MIN_VALUE;
-			for(EtatOthello eTemp : listeEtat) {
+			for(EtatOthello eTemp : S) {
 				score = evaluation(c-1, eTemp);
 				if(score > scoreMax) {
 					scoreMax = score;
@@ -290,7 +304,7 @@ public class EtatOthello extends Etat{
 		}
 		else {
 			int scoreMin = Integer.MAX_VALUE;
-			for(EtatOthello eTemp : listeEtat) {
+			for(EtatOthello eTemp : S) {
 				score = evaluation(c-1, eTemp);
 				if(score < scoreMin) {
 					scoreMin = score;
