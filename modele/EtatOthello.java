@@ -216,7 +216,7 @@ public class EtatOthello extends Etat{
 					int k = listeEtats.size();
 					int l = 0 ;
 					boolean ajoute = false;
-					while(l < k && !ajoute){
+					while(l < k && !ajoute){//ici erreur
 						if(!listeEtats.get(l).estEgal(e)){
 							ajoute = true;
 							listeEtats.add(e);
