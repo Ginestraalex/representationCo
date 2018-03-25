@@ -9,7 +9,8 @@ public class EtatOthello extends Etat{
 	public Pion[][] plateauJeu;
 	int nbPionsNoirs;
 	int nbPionsBlancs;
-	public JoueurOthello joueur;
+	public JoueurOthello joueurCourant;
+	public JoueurOthello joueurSuivant;
 	public boolean tourPrecedentPasse;
 	public boolean estFinal; 
 	
@@ -45,7 +46,8 @@ public class EtatOthello extends Etat{
 		this.nbPionsNoirs = e.nbPionsNoirs;
 		this.tourPrecedentPasse = e.tourPrecedentPasse;
 		this.estFinal = e.estFinal;
-		this.joueur = e.joueur;
+		this.joueurCourant = e.joueurCourant;
+		this.joueurSuivant = e.joueurSuivant;
 	}
 	
 	
@@ -73,8 +75,15 @@ public class EtatOthello extends Etat{
 	/*
 	 * defini le joueur qui doit jouer
 	 */
-	public void setTourJoueur(JoueurOthello j) {
-		joueur = j;
+	public void setJoueurCourant(JoueurOthello j) {
+		joueurCourant = j;
+	}
+	
+	/*
+	 * defini le joueur qui jouera le prochain tour
+	 */
+	public void setJoueurSuivant(JoueurOthello j) {
+		joueurSuivant = j;
 	}
 	
 	
@@ -95,7 +104,7 @@ public class EtatOthello extends Etat{
     		char cJoueur;
     		char cAdversaire;
     		int k = 1;
-    		if(joueur.getCouleur() == 'N') { //tour joueur noir
+    		if(joueurCourant.getCouleur() == 'N') { //tour joueur noir
     			cJoueur = 'N';
     			cAdversaire = 'B';
     		}
@@ -213,7 +222,7 @@ public class EtatOthello extends Etat{
 	 * retourne la liste des successeurs possibles d'un état
 	 */
 	public ArrayList<EtatOthello> successeurs() {
-		ArrayList<EtatOthello> listeEtats = new ArrayList<EtatOthello>();
+		ArrayList<EtatOthello> listeEtats = new ArrayList<EtatOthello>();				
 		for(int i = 0 ; i < plateauJeu.length ; i++){
 			for(int j = 0 ; j < plateauJeu.length ; j++){
 				if(plateauJeu[i][j].getCouleur() == 'J'){
@@ -261,11 +270,11 @@ public class EtatOthello extends Etat{
 	 * fonction eval 0
 	 */
 	private int eval0(EtatOthello e){
-		if(e.joueur.couleur == 'N'){
-			return nbPionsBlancs;
+		if(e.joueurCourant.couleur == 'N'){
+			return e.nbPionsBlancs;
 		}
 		else{
-			return nbPionsNoirs;
+			return e.nbPionsNoirs;
 		}
 	}
 	
@@ -275,11 +284,11 @@ public class EtatOthello extends Etat{
 	 */
 	private int evaluation(int c, EtatOthello e) {
 		if(e.estFinal()) {
-			if(nbPionsNoirs == nbPionsBlancs) {
+			if(e.nbPionsNoirs == e.nbPionsBlancs) {
 				return 0;
 			}
-			else if(nbPionsNoirs < nbPionsBlancs) {
-				if(joueur.getCouleur() == 'N') {
+			else if(e.nbPionsNoirs < e.nbPionsBlancs) {
+				if(e.joueurCourant.getCouleur() == 'N') {
 					return Integer.MIN_VALUE;
 				}
 				else {
@@ -287,7 +296,7 @@ public class EtatOthello extends Etat{
 				}
 			}
 			else {
-				if(joueur.getCouleur() == 'N') {
+				if(e.joueurCourant.getCouleur() == 'N') {
 					return Integer.MAX_VALUE;
 				}
 				else {
@@ -295,12 +304,12 @@ public class EtatOthello extends Etat{
 				}
 			}
 		}
-		ArrayList<EtatOthello> S = e.successeurs();
 		if(c == 0) {
 			return eval0(e);
 		}
+		ArrayList<EtatOthello> S = e.successeurs();
 		int score;
-		if(!joueur.getNom().equals("Ordinateur")) {
+		if(!e.joueurCourant.getNom().equals("Ordinateur")) {
 			int scoreMax = Integer.MIN_VALUE;
 			for(EtatOthello eTemp : S) {
 				score = evaluation(c-1, eTemp);
@@ -336,7 +345,7 @@ public class EtatOthello extends Etat{
 	 * defini le caractere de la couelur du joueur dans la case du plateau de jeu
 	 */
 	public void ecriture(int x, int y) {
-		char laCouleur = joueur.getCouleur();
+		char laCouleur = joueurCourant.getCouleur();
 		if(laCouleur == 'N') {
 			if(this.plateauJeu[x][y].getCouleur() == 'B') {
 				nbPionsBlancs--;
@@ -389,7 +398,7 @@ public class EtatOthello extends Etat{
 	 */
 	public boolean estEgal(EtatOthello e) {
 		/* symetrie axiale et rotative a faire */
-		if( this.nbPionsBlancs == e.nbPionsBlancs && this.nbPionsNoirs == e.nbPionsNoirs && joueur == e.joueur) {
+		if( this.nbPionsBlancs == e.nbPionsBlancs && this.nbPionsNoirs == e.nbPionsNoirs && joueurCourant == e.joueurCourant) {
 			int i = 0;
 			int j = 0 ;
 			int taille = plateauJeu.length;
@@ -422,9 +431,26 @@ public class EtatOthello extends Etat{
 	public void affichage() {
 		for(int i = 0 ; i < plateauJeu.length ; i++) {
 			for(int j = 0 ; j < plateauJeu[0].length ; j++) {
-				System.out.print(" "+lecture(j,i)+ " ");
+				if(lecture(j,i)=='V') {
+					System.out.print(" . ");
+
+				}
+				else
+				{
+					System.out.print(" "+lecture(j,i)+ " ");
+
+				}
 			}
 			System.out.println("");
 		}
+	}
+
+	/*
+	 * donne la main au joueur qui suit
+	 */
+	public void tourSuivant() {
+		JoueurOthello jTemp = joueurCourant;
+		joueurCourant = joueurSuivant;
+		joueurSuivant = jTemp;
 	}
 }

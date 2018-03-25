@@ -10,7 +10,6 @@ public class PlateauDeJeu {
 
 	private int taillePlateau;
 	private JoueurOthello[] tableauJoueurs;
-	private int tourDuJoueurNum;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
     
@@ -18,7 +17,6 @@ public class PlateauDeJeu {
     		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = new JoueurOthello("Joueur 1", 'N');
     		tableauJoueurs[1] = new JoueurOthello("Joueur 2", 'B');
-    		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
     		nouvellePartie(8);
     		etat.calculJouabilite();
@@ -28,7 +26,6 @@ public class PlateauDeJeu {
     		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = new JoueurOthello("Joueur 1", 'N');
     		tableauJoueurs[1] = new JoueurOthello("Joueur 2", 'B');
-    		tourDuJoueurNum = 0;
     		vues = new ArrayList<Vue>();
     		nouvellePartie(taille);
     		etat.calculJouabilite();
@@ -82,7 +79,7 @@ public class PlateauDeJeu {
     }
     
     public void remplacerJoeurParOrdinateur(){
-    	String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
+    		String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
 		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
 		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui sera remplacé", "Ajout nouveau joueur", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
 		if(nomJoueurARemplacer != null) {
@@ -94,6 +91,7 @@ public class PlateauDeJeu {
     		}
 		}
     }
+    
     
     /*
      * retourne la taille de la grille de jeu
@@ -128,44 +126,36 @@ public class PlateauDeJeu {
     }
     
     
-    
-    /*
-     * retourne true si le joueur peut jouer à cet endroit
-     */
-    public boolean estJouable(int i, int j){
-    		if(etat.lecture(i,j) == 'J') {
-    			return true;
-    		}
-    		return false;
-    }
-    
     /*
      * passe la main au joueur suivant
      */
     public void joueurSuivant() {
-		tourDuJoueurNum++;
-		tourDuJoueurNum = tourDuJoueurNum % 2;
-		if(tourDuJoueurNum == 0) {
-			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[0].getNom());
-			etat.setTourJoueur(tableauJoueurs[0]);
-		}
-		else if(tourDuJoueurNum == 1 ){
-			JOptionPane.showMessageDialog(null, "C'est au tour de "+tableauJoueurs[1].getNom());
-			etat.setTourJoueur(tableauJoueurs[1]);
-		}
+		etat.tourSuivant();
 		etat.calculJouabilite();
+		
+		/* si la partie est finie */
+		if(etat.estFinal) {
+			finDeLaPartie();
+		}
 		/* si le joueur n'a pas de solution pour jouer, on passe son tour */
-		if(!etat.estFinal && etat.tourPrecedentPasse) {
-			JOptionPane.showMessageDialog(null, etat.joueur.getNom()+" ne peut pas jouer, il passe son tour.");
+		else if(!etat.estFinal && etat.tourPrecedentPasse) {
+			JOptionPane.showMessageDialog(null, etat.joueurCourant.getNom()+" ne peut pas jouer, il passe son tour.");
 			joueurSuivant();
 		}
 		else {
-			if(etat.joueur.isOrdinateur()){
+			if(etat.joueurCourant.isOrdinateur()){
 				etat.affichage();
 				System.out.println();
-				etat = etat.minimax(1);
+				etat = etat.minimax(0);
+				System.out.println("---");
 				etat.affichage();
+				System.out.println();
+				System.out.println("====================");
+				System.out.println();
 				joueurSuivant();
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());
 			}
 		}
     }
@@ -178,13 +168,8 @@ public class PlateauDeJeu {
     		if(etat.lecture(i,j) == 'J') {
     			etat.ecriture(i, j);
     			colorer(i,j);
-    			if(etat.estFinal()) {
-    				finDeLaPartie();
-    			}
-    			else {
-    				joueurSuivant();
-            		maj();	
-    			}
+			joueurSuivant();
+    			maj();	
     		}
     }
     
@@ -192,7 +177,8 @@ public class PlateauDeJeu {
 	    	if(e.lecture(i,j) == 'J') {
 			e.ecriture(i, j);
 			PlateauDeJeu.colorer(e, i,j);
-	    }
+			e.tourSuivant();
+	    	}
     }
     
    /*
@@ -418,19 +404,6 @@ public class PlateauDeJeu {
 	}
     
     
-    
-    
-    /*
-     * création d'une nouvelle partie
-     */
-    public void nouvellePartie(int taille) {
-	    taillePlateau = taille;
-	    tourDuJoueurNum = 1;
-    	etat = new EtatOthello(taillePlateau);
-    	joueurSuivant();
-    }
-    
-    
     /*
      * retourne vrai si la case ne contient pas de pion
      */
@@ -454,6 +427,26 @@ public class PlateauDeJeu {
     			return tableauJoueurs[numJoueur];
     		}
     }
+    
+    
+    /*
+     * création d'une nouvelle partie
+     */
+    public void nouvellePartie(int taille) {
+	    taillePlateau = taille;
+	    	etat = new EtatOthello(taillePlateau);
+	    	etat.setJoueurCourant(tableauJoueurs[0]);
+	    	etat.setJoueurSuivant(tableauJoueurs[1]);
+
+	    	etat.calculJouabilite();	    	
+		JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());
+	    	
+	    	if(etat.joueurCourant.isOrdinateur()) {
+	    		etat = etat.minimax(0);
+	    		joueurSuivant();
+	    	}
+    }
+    
 
     /*
      * test si la partie est finie
