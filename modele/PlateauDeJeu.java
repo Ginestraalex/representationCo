@@ -152,6 +152,8 @@ public class PlateauDeJeu {
 				System.out.println();
 				System.out.println("====================");
 				System.out.println();
+				etat.tourSuivant();
+				joueurSuivant();
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());
