@@ -132,7 +132,7 @@ public class PlateauDeJeu {
     public void joueurSuivant() {
 		etat.tourSuivant();
 		etat.calculJouabilite();
-		
+
 		/* si la partie est finie */
 		if(etat.estFinal) {
 			finDeLaPartie();
@@ -152,7 +152,6 @@ public class PlateauDeJeu {
 				System.out.println();
 				System.out.println("====================");
 				System.out.println();
-				joueurSuivant();
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());

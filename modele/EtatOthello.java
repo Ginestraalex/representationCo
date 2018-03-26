@@ -309,7 +309,7 @@ public class EtatOthello extends Etat{
 		}
 		ArrayList<EtatOthello> S = e.successeurs();
 		int score;
-		if(!e.joueurCourant.getNom().equals("Ordinateur")) {
+		if(!e.joueurCourant.isOrdinateur()) {
 			int scoreMax = Integer.MIN_VALUE;
 			for(EtatOthello eTemp : S) {
 				score = evaluation(c-1, eTemp);
