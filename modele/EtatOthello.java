@@ -253,9 +253,9 @@ public class EtatOthello extends Etat{
 		int score;
 		int score_max = Integer.MIN_VALUE;
 		for(EtatOthello eTemp : listeEtat) {
-			score = evaluation(c, eTemp);
-			System.out.println(""+score);
 			eTemp.affichage();
+			System.out.println("");
+			score = evaluation(c, eTemp);
 			if(score >= score_max) {
 				e_sortie = eTemp;
 				score_max = score;

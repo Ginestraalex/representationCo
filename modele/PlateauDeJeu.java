@@ -145,12 +145,11 @@ public class PlateauDeJeu {
 		else {
 			if(etat.joueurCourant.isOrdinateur()){
 				etat.affichage();
-				System.out.println();
-				etat = etat.minimax(0);
-				System.out.println("---");
+				etat = etat.minimax(2);
+				System.out.println("--- res ---");
 				etat.affichage();
 				System.out.println();
-				System.out.println("====================");
+				System.out.println("===========================");
 				System.out.println();
 				etat.tourSuivant();
 				joueurSuivant();
@@ -179,6 +178,7 @@ public class PlateauDeJeu {
 			e.ecriture(i, j);
 			PlateauDeJeu.colorer(e, i,j);
 			e.tourSuivant();
+			e.calculJouabilite();
 	    	}
     }
     
@@ -444,6 +444,7 @@ public class PlateauDeJeu {
 	    	
 	    	if(etat.joueurCourant.isOrdinateur()) {
 	    		etat = etat.minimax(0);
+	    		etat.tourSuivant();
 	    		joueurSuivant();
 	    	}
     }
