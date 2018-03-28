@@ -235,6 +235,9 @@ public class EtatOthello extends Etat{
 						}
 					}
 					if(inexistant) {
+						if(e.estFinal()) {
+							e.estFinal = true;
+						}
 						listeEtats.add(e);
 					}
 				}
