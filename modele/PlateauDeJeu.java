@@ -167,18 +167,20 @@ public class PlateauDeJeu {
     public void jouer(int i, int j) {
     		if(etat.lecture(i,j) == 'J') {
     			etat.ecriture(i, j);
+    			etat.setDernierCoupJoue(i, j);
     			colorer(i,j);
-			joueurSuivant();
+    			joueurSuivant();
     			maj();	
     		}
     }
     
     public static void jouer(EtatOthello e, int i, int j) {
 	    	if(e.lecture(i,j) == 'J') {
-			e.ecriture(i, j);
-			PlateauDeJeu.colorer(e, i,j);
-			e.tourSuivant();
-			e.calculJouabilite();
+				e.ecriture(i, j);
+				e.setDernierCoupJoue(i, j);
+				PlateauDeJeu.colorer(e, i,j);
+				e.tourSuivant();
+				e.calculJouabilite();
 	    	}
     }
     

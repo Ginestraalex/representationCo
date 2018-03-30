@@ -13,6 +13,7 @@ public class EtatOthello extends Etat{
 	public JoueurOthello joueurSuivant;
 	public boolean tourPrecedentPasse;
 	public boolean estFinal; 
+	public int[] dernierCoupJoue; //tableau de taille 2 : tab[0] = x , tab[1] = y
 	
 	public EtatOthello() {
 		
@@ -33,6 +34,7 @@ public class EtatOthello extends Etat{
 		ecriture(taille/2, taille/2, 'N');
 		tourPrecedentPasse = false;
 		estFinal = false;
+		dernierCoupJoue = new int[2];
 	}
 	
 	public EtatOthello(EtatOthello e){
@@ -48,6 +50,7 @@ public class EtatOthello extends Etat{
 		this.estFinal = e.estFinal;
 		this.joueurCourant = e.joueurCourant;
 		this.joueurSuivant = e.joueurSuivant;
+		dernierCoupJoue = new int[2];
 	}
 	
 	
@@ -69,6 +72,29 @@ public class EtatOthello extends Etat{
 	
 	public int getSize() {
 		return plateauJeu.length;
+	}
+	
+	/* 
+	 * retourne le X du dernier coup joue
+	 */
+	public int getXDernierCoup(){
+		return dernierCoupJoue[0];
+	}
+	
+	/* 
+	 * retourne le Y du dernier coup joue
+	 */
+	public int getYDernierCoup(){
+		return dernierCoupJoue[1];
+	}
+	
+	
+	/*
+	 * stocke le dernier coup joue
+	 */
+	public void setDernierCoupJoue(int x, int y){
+		this.dernierCoupJoue[0] = x;
+		this.dernierCoupJoue[1] = y;
 	}
 	
 	
@@ -273,11 +299,25 @@ public class EtatOthello extends Etat{
 	 * fonction eval 0
 	 */
 	private int eval0(EtatOthello e){
+		int bonus = 0;
+		/* ajoute un bonus si l'ordinateur prend une des lignes exterieures (+4) ou un coin (+12) */
+		if(getXDernierCoup() == 0 || getXDernierCoup() == plateauJeu.length-1){
+			bonus += 4;
+			if(getYDernierCoup() == 0 || getYDernierCoup() == plateauJeu.length -1){
+				bonus += 8;
+			}
+		}
+		else if(getYDernierCoup() == 0 || getYDernierCoup() == plateauJeu.length-1){
+			bonus += 4;
+			if(getXDernierCoup() == 0 || getXDernierCoup() == plateauJeu.length-1){
+				bonus += 8;
+			}
+		}
 		if(e.joueurCourant.couleur == 'N'){
-			return e.nbPionsBlancs;
+			return e.nbPionsBlancs + bonus;
 		}
 		else{
-			return e.nbPionsNoirs;
+			return e.nbPionsNoirs + bonus;
 		}
 	}
 	
@@ -444,8 +484,9 @@ public class EtatOthello extends Etat{
 
 				}
 			}
-			System.out.println("");
+			System.out.println();
 		}
+		System.out.println("dernier coup joue: x="+ this.getXDernierCoup() + " y=" +this.getYDernierCoup());
 	}
 
 	/*
