@@ -8,12 +8,14 @@ import representationCo.view.Vue;
 
 public class PlateauDeJeu {
 
+	public boolean activerMessagesTour;
 	private int taillePlateau;
 	private JoueurOthello[] tableauJoueurs;
 	private EtatOthello etat;
     private ArrayList<Vue> vues;
     
     public PlateauDeJeu() {
+    		activerMessagesTour = true;
     		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = new JoueurOthello("Joueur 1", 'N');
     		tableauJoueurs[1] = new JoueurOthello("Joueur 2", 'B');
@@ -23,12 +25,23 @@ public class PlateauDeJeu {
     }
     
     public PlateauDeJeu(int taille) {
+		activerMessagesTour = true;
     		tableauJoueurs = new JoueurOthello[2];
     		tableauJoueurs[0] = new JoueurOthello("Joueur 1", 'N');
     		tableauJoueurs[1] = new JoueurOthello("Joueur 2", 'B');
     		vues = new ArrayList<Vue>();
     		nouvellePartie(taille);
     		etat.calculJouabilite();
+    }
+    
+    
+    public void activerDesactiverMessage() {
+    		if(activerMessagesTour) {
+    			activerMessagesTour = false;
+    		}
+    		else {
+    			activerMessagesTour = true;
+    		}
     }
     
     
@@ -50,46 +63,63 @@ public class PlateauDeJeu {
 		if(nomJoueurARemplacer != null) {
 			String nom = JOptionPane.showInputDialog("Quel est votre nom", "Ajout nouveau joueur");
 			if(nom != null) {
-				if(nom.equals("Ordinateur")){
-    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur (Ordinateur est reserve pour la machine)");
+				if(nom.contains("Ordinateur")){
+    					JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur (le mot: Ordinateur est reserve pour la machine)");
 				}
 				else{
-		    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
-		    			if(tableauJoueurs[1].getNom().equals(nom))
-		    			{
-		    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur, le nom existe deja");
-		    				ajouterJoueur();
-		    			}
-		    			else{
-		    				tableauJoueurs[0] = new JoueurOthello(nom, tableauJoueurs[0].getCouleur());
-		    			}
-		    		}
-		    		else {
-		    			if(tableauJoueurs[0].getNom().equals(nom)){
-		    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur, le nom existe deja");
-		    				ajouterJoueur();
-		    			}
-		    			else{
-		    				tableauJoueurs[1] = new JoueurOthello(nom, tableauJoueurs[1].getCouleur());
-	    				}
-		    		}
+			    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
+			    			if(tableauJoueurs[1].getNom().equals(nom))
+			    			{
+			    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur, le nom existe deja");
+			    				ajouterJoueur();
+			    			}
+			    			else{
+			    				tableauJoueurs[0].setNom(nom);
+			    				tableauJoueurs[0].setOrdinateur(false);
+			    			}
+			    		}
+			    		else {
+			    			if(tableauJoueurs[0].getNom().equals(nom)){
+			    				JOptionPane.showMessageDialog(null, "Impossible d'ajouter le joueur, le nom existe deja");
+			    				ajouterJoueur();
+			    			}
+			    			else{
+			    				tableauJoueurs[1].setNom(nom);
+			    				tableauJoueurs[1].setOrdinateur(false);
+		    				}
+			    		}
 				}
 			}
 		}
     }
+    
     
     public void remplacerJoeurParOrdinateur(){
     		String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
 		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
 		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui sera remplacé", "Ajout nouveau joueur", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
 		if(nomJoueurARemplacer != null) {
-    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
-    			tableauJoueurs[0].setOrdinateur();
-    		}
-    		else {
-    			tableauJoueurs[1].setOrdinateur();
-    		}
+	    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
+	    			tableauJoueurs[0].setOrdinateur(true);
+	    			tableauJoueurs[0].setNom("Ordinateur");
+	    		}
+	    		else {
+	    			tableauJoueurs[1].setOrdinateur(true);
+	    			tableauJoueurs[1].setNom("Ordinateur");
+	    		}
 		}
+    }
+    
+    /*
+     * instancie les deux joueurs du jeux comme 
+     * étant des ordinateurs
+     */
+    public void ordinateurVsOrdinateur() {
+    		tableauJoueurs[0].setNom("Ordinateur1");
+    		tableauJoueurs[0].setOrdinateur(true);
+    		tableauJoueurs[1].setNom("Ordinateur2");
+    		tableauJoueurs[1].setOrdinateur(true);
+    		activerMessagesTour = false;
     }
     
     
@@ -119,6 +149,21 @@ public class PlateauDeJeu {
     
     
     /*
+     * retourne le vainqueur de la partie (s'il y en a un)
+     */
+    public JoueurOthello getVainqueur()
+    {
+    		int numJoueur = etat.getNumJoueurVainqueur();
+    		if(numJoueur == 2) {
+    			return null;
+    		}
+    		else {
+    			return tableauJoueurs[numJoueur];
+    		}
+    }
+    
+    
+    /*
      * retourne le nombre de partie gagnee pas le joueur numero index
      */
     public int getScore(int index) {
@@ -131,6 +176,9 @@ public class PlateauDeJeu {
      */
     public void joueurSuivant() {
 		etat.tourSuivant();
+		if(activerMessagesTour) {
+			JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());
+		}
 		etat.calculJouabilite();
 
 		/* si la partie est finie */
@@ -145,7 +193,10 @@ public class PlateauDeJeu {
 		else {
 			if(etat.joueurCourant.isOrdinateur()){
 				etat.affichage();
-				etat = etat.minimax(2);
+				long debut = System.currentTimeMillis();	 
+				etat = etat.minimax(4);
+				System.out.println("temps de calcul :"+(System.currentTimeMillis()-debut));
+
 				System.out.println("--- res ---");
 				etat.affichage();
 				System.out.println();
@@ -153,9 +204,6 @@ public class PlateauDeJeu {
 				System.out.println();
 				etat.tourSuivant();
 				joueurSuivant();
-			}
-			else {
-				JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());
 			}
 		}
     }
@@ -415,20 +463,6 @@ public class PlateauDeJeu {
     			return true;
     		}
     		return false;
-    }
-    
-    /*
-     * retourne le vainqueur de la partie (s'il y en a un)
-     */
-    public JoueurOthello getVainqueur()
-    {
-    		int numJoueur = etat.getNumJoueurVainqueur();
-    		if(numJoueur == 2) {
-    			return null;
-    		}
-    		else {
-    			return tableauJoueurs[numJoueur];
-    		}
     }
     
     

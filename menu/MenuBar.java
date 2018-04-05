@@ -19,6 +19,8 @@ public class MenuBar extends JMenuBar implements Vue{
 	public JMenuItem nouvellePartie;
 	public JMenuItem affichageScore;
 	public JMenuItem jouerContreOrdi;
+	public JMenuItem ordiContreOrdi;
+	public JMenuItem activationMessage;
 
 	
 	
@@ -29,7 +31,10 @@ public class MenuBar extends JMenuBar implements Vue{
 		nouvellePartie = new JMenuItem("Nouvelle Partie");
 		affichageScore = new JMenuItem("Afficher Score");
 		jouerContreOrdi = new JMenuItem("Jouer contre l'ordinateur");
-
+		ordiContreOrdi = new JMenuItem("Observer Ordinateur vs Ordinateur");
+		activationMessage = new JMenuItem("(des)activer messages tours");
+		activationMessage.setToolTipText("Permet d'activer/desactiver l'affichage des messages concernant le tour du joueur");
+		
 
 		ajouterJoueur.addActionListener(new ActionListener() {
 			@Override
@@ -69,13 +74,30 @@ public class MenuBar extends JMenuBar implements Vue{
 				modele.nouvellePartie(modele.getTaille());
 				modele.maj();
 			}
-			
+		});
+		
+		ordiContreOrdi.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modele.ordinateurVsOrdinateur();
+				modele.nouvellePartie(modele.getTaille());
+				modele.maj();
+			}
+		});
+		
+		activationMessage.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				modele.activerDesactiverMessage();
+			}
 		});
 		
 		paramPartie.add(ajouterJoueur);
 		paramPartie.add(nouvellePartie);
 		paramPartie.add(jouerContreOrdi);
 		paramPartie.add(affichageScore);
+		paramPartie.add(ordiContreOrdi);
+		paramPartie.add(activationMessage);
 		add(paramPartie);	
 	}
 

@@ -27,16 +27,26 @@ public abstract class Joueur {
 	}
 	
 	/*
+	 *  definit le nom du joueur par str
+	 */
+	public void setNom(String str) {
+		nomJoueur = str;
+		nbGagnees = 0;
+	}
+	
+	/*
+	 * definit si le joueur est un ordinateur
+	 */
+	public void setOrdinateur(boolean isComputer){
+		estOrdinateur = isComputer;
+		nbGagnees = 0;
+	}
+	
+	/*
 	 * retourne le nombre de partie gagnée
 	 */
 	public int getGagne() {
 		return nbGagnees;
-	}
-	
-	public void setOrdinateur(){
-		estOrdinateur = true;
-		nomJoueur = "Ordinateur";
-		nbGagnees = 0;
 	}
 	
 	/*
@@ -46,6 +56,10 @@ public abstract class Joueur {
 		return nomJoueur;
 	}
 	
+	/*
+	 * retourne true si le joueur est un ordianteur
+	 * 
+	 */
 	public boolean isOrdinateur(){
 		return estOrdinateur;
 	}
