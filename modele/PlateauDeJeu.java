@@ -397,9 +397,9 @@ public class PlateauDeJeu {
 		}
 		else {
 			if(etat.joueurCourant.isOrdinateur()){
-				long debut = System.currentTimeMillis();	 
+				//long debut = System.currentTimeMillis();	 
 				etat = etat.minmax_avec_elagage(etat.getProfondeurRecherche());
-				System.out.println("temps de calcul :"+(System.currentTimeMillis()-debut));
+				//System.out.println("temps de calcul :"+(System.currentTimeMillis()-debut));
 				
 				etat.tourSuivant();
 				joueurSuivant();

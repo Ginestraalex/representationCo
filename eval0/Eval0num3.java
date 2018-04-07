@@ -10,11 +10,30 @@ public class Eval0num3 implements Eval0{
 	}
 	
 	/*
-	 * (non-Javadoc)
-	 * @see representationCo.eval0.Eval0#eval0fonction(representationCo.modele.EtatOthello)
+	 * cherche a prendre les coins si possible,
+	 * sinon essaye de prendre le maximum de pions
 	 */
 	public int eval0fonction(EtatOthello e) {
-		return 0;
+		int res = 0;
+		if(e.getXDernierCoup() == 0 || e.getXDernierCoup() == e.plateauJeu.length-1){
+			if(e.getYDernierCoup() == 0 || e.getYDernierCoup() == e.plateauJeu.length -1){
+				res = Integer.MAX_VALUE;
+			}
+		}
+		else if(e.getYDernierCoup() == 0 || e.getYDernierCoup() == e.plateauJeu.length-1){
+			if(e.getXDernierCoup() == 0 || e.getXDernierCoup() == e.plateauJeu.length-1){
+				res = Integer.MAX_VALUE;
+			}
+		}
+		else {
+			if(e.joueurCourant.couleur == 'N'){
+				return e.nbPionsBlancs;
+			}
+			else{
+				return e.nbPionsNoirs;
+			}
+		}
+		return res;
 	}
 
 	@Override
