@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import representationCo.eval0.Eval0num1;
+import representationCo.eval0.Eval0num2;
 import representationCo.view.Vue;
 
 public class PlateauDeJeu {
@@ -94,6 +96,45 @@ public class PlateauDeJeu {
     }
     
     
+    
+    
+    /*
+     * fonction de définition de eval0
+     */
+    public void setEval0() {
+		String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
+		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
+		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui changera sa fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
+		if(nomJoueurARemplacer != null) {
+			String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3"};
+			String eval0Choisie = "Eval0num1";
+			eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
+			if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer) && tableauJoueurs[0].isOrdinateur()) {
+				if(eval0Choisie.equals("Eval0num1")) {
+					tableauJoueurs[0].fonctionDEvaluation = new Eval0num1();
+				}
+				else if(eval0Choisie.equals("Eval0num2")) {
+					tableauJoueurs[0].fonctionDEvaluation = new Eval0num2();
+				}
+				else {
+					//tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+				}
+			}
+	    		else if(tableauJoueurs[1].isOrdinateur()){
+	    			if(eval0Choisie.equals("Eval0num1")) {
+						tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
+					}
+					else if(eval0Choisie.equals("Eval0num2")) {
+						tableauJoueurs[1].fonctionDEvaluation = new Eval0num2();
+					}
+					else {
+						//tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+					}
+	    		}
+		}
+    }
+    
+    
     public void remplacerJoeurParOrdinateur(){
     		String[] joueurPossible = {tableauJoueurs[0].getNom(), tableauJoueurs[1].getNom()};
 		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
@@ -102,12 +143,15 @@ public class PlateauDeJeu {
 	    		if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer)) {
 	    			tableauJoueurs[0].setOrdinateur(true);
 	    			tableauJoueurs[0].setNom("Ordinateur");
+	        		tableauJoueurs[0].fonctionDEvaluation = new Eval0num1();
 	    		}
 	    		else {
 	    			tableauJoueurs[1].setOrdinateur(true);
 	    			tableauJoueurs[1].setNom("Ordinateur");
+	        		tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
 	    		}
 		}
+		this.setEval0();
     }
     
     /*
@@ -117,8 +161,10 @@ public class PlateauDeJeu {
     public void ordinateurVsOrdinateur() {
     		tableauJoueurs[0].setNom("Ordinateur1");
     		tableauJoueurs[0].setOrdinateur(true);
+    		tableauJoueurs[0].fonctionDEvaluation = new Eval0num1();
     		tableauJoueurs[1].setNom("Ordinateur2");
     		tableauJoueurs[1].setOrdinateur(true);
+    		tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
     		activerMessagesTour = false;
     }
     
@@ -192,16 +238,10 @@ public class PlateauDeJeu {
 		}
 		else {
 			if(etat.joueurCourant.isOrdinateur()){
-				etat.affichage();
 				long debut = System.currentTimeMillis();	 
-				etat = etat.minimax(4);
+				etat = etat.minmax_avec_elagage(6);
 				System.out.println("temps de calcul :"+(System.currentTimeMillis()-debut));
-
-				System.out.println("--- res ---");
-				etat.affichage();
-				System.out.println();
-				System.out.println("===========================");
-				System.out.println();
+				
 				etat.tourSuivant();
 				joueurSuivant();
 			}
@@ -224,11 +264,11 @@ public class PlateauDeJeu {
     
     public static void jouer(EtatOthello e, int i, int j) {
 	    	if(e.lecture(i,j) == 'J') {
-				e.ecriture(i, j);
-				e.setDernierCoupJoue(i, j);
-				PlateauDeJeu.colorer(e, i,j);
-				e.tourSuivant();
-				e.calculJouabilite();
+			e.ecriture(i, j);
+			e.setDernierCoupJoue(i, j);
+			PlateauDeJeu.colorer(e, i,j);
+			e.tourSuivant();
+			e.calculJouabilite();
 	    	}
     }
     

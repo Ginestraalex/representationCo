@@ -2,18 +2,23 @@ package representationCo.modele;
 
 import java.util.ArrayList;
 
+import representationCo.eval0.Eval0;
+import representationCo.eval0.Eval0num1;
+
 
 
 public class EtatOthello extends Etat{
 	
 	public Pion[][] plateauJeu;
-	int nbPionsNoirs;
-	int nbPionsBlancs;
+	public int nbPionsNoirs;
+	public int nbPionsBlancs;
 	public JoueurOthello joueurCourant;
 	public JoueurOthello joueurSuivant;
 	public boolean tourPrecedentPasse;
 	public boolean estFinal; 
 	public int[] dernierCoupJoue; //tableau de taille 2 : tab[0] = x , tab[1] = y
+	public Eval0 fonctionDEvaluation;
+
 	
 	public EtatOthello() {
 		
@@ -35,6 +40,8 @@ public class EtatOthello extends Etat{
 		tourPrecedentPasse = false;
 		estFinal = false;
 		dernierCoupJoue = new int[2];
+		fonctionDEvaluation = new Eval0num1();
+
 	}
 	
 	public EtatOthello(EtatOthello e){
@@ -282,8 +289,6 @@ public class EtatOthello extends Etat{
 		int score;
 		int score_max = Integer.MIN_VALUE;
 		for(EtatOthello eTemp : listeEtat) {
-			eTemp.affichage();
-			System.out.println("");
 			score = evaluation(c, eTemp);
 			if(score >= score_max) {
 				e_sortie = eTemp;
@@ -293,39 +298,32 @@ public class EtatOthello extends Etat{
 		return e_sortie;
 	}
 	
-
+	
 	
 	/*
-	 * fonction eval 0
+	 * fonction minmax avec elagage du cours
 	 */
-	private int eval0(EtatOthello e){
-		int bonus = 0;
-		/* ajoute un bonus si l'ordinateur prend une des lignes exterieures (+4) ou un coin (+12) */
-		if(getXDernierCoup() == 0 || getXDernierCoup() == plateauJeu.length-1){
-			bonus += 4;
-			if(getYDernierCoup() == 0 || getYDernierCoup() == plateauJeu.length -1){
-				bonus += 8;
+	public EtatOthello minmax_avec_elagage(int c) {
+		ArrayList<EtatOthello> listeEtat = this.successeurs();
+		EtatOthello e_sortie = null;
+		int score;
+		int score_max = Integer.MIN_VALUE;
+		for(EtatOthello eTemp : listeEtat) {
+			score = evaluation_alpha_beta(c, eTemp, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			if(score >= score_max) {
+				e_sortie = eTemp;
+				score_max = score;
 			}
 		}
-		else if(getYDernierCoup() == 0 || getYDernierCoup() == plateauJeu.length-1){
-			bonus += 4;
-			if(getXDernierCoup() == 0 || getXDernierCoup() == plateauJeu.length-1){
-				bonus += 8;
-			}
-		}
-		if(e.joueurCourant.couleur == 'N'){
-			return e.nbPionsBlancs + bonus;
-		}
-		else{
-			return e.nbPionsNoirs + bonus;
-		}
+		return e_sortie;
 	}
+	
 	
 	
 	/*
 	 * fonction evaluation du cours
 	 */
-	private int evaluation(int c, EtatOthello e) {
+	public int evaluation(int c, EtatOthello e) {
 		if(e.estFinal()) {
 			if(e.nbPionsNoirs == e.nbPionsBlancs) {
 				return 0;
@@ -348,7 +346,7 @@ public class EtatOthello extends Etat{
 			}
 		}
 		if(c == 0) {
-			return eval0(e);
+			return fonctionDEvaluation.eval0fonction(e);
 		}
 		ArrayList<EtatOthello> S = e.successeurs();
 		int score;
@@ -373,6 +371,77 @@ public class EtatOthello extends Etat{
 			return scoreMin;
 		}
 	}
+	
+	
+	
+	/*
+	 * fonction evalutation avec elagage
+	 */
+	public int evaluation_alpha_beta(int c, EtatOthello e, int alpha, int beta) {
+		if(e.estFinal()) {
+			if(e.nbPionsNoirs == e.nbPionsBlancs) {
+				return 0;
+			}
+			else if(e.nbPionsNoirs < e.nbPionsBlancs) {
+				if(e.joueurCourant.getCouleur() == 'N') {
+					return Integer.MIN_VALUE;
+				}
+				else {
+					return Integer.MAX_VALUE;
+				}
+			}
+			else {
+				if(e.joueurCourant.getCouleur() == 'N') {
+					return Integer.MAX_VALUE;
+				}
+				else {
+					return Integer.MIN_VALUE;
+				}
+			}
+		}
+		if(c == 0) {
+			return fonctionDEvaluation.eval0fonction(e);
+		}
+		ArrayList<EtatOthello> S = e.successeurs();
+		int score;
+		if(!e.joueurCourant.isOrdinateur()) {
+			int a = alpha;
+			int scoreMax = Integer.MIN_VALUE;
+			for(EtatOthello eTemp : S) {
+				scoreMax = Integer.MIN_VALUE;
+				score = evaluation_alpha_beta(c-1, eTemp, a, beta);
+				if(score > scoreMax) {
+					scoreMax = score;
+				}
+				if(scoreMax >= beta) {
+					return scoreMax;
+				}
+				if(a < scoreMax) {
+					a = scoreMax;
+				}
+			}
+			return scoreMax;
+		}
+		else {
+			int b = beta;
+			int scoreMin = Integer.MAX_VALUE;
+			for(EtatOthello eTemp : S) {
+				scoreMin = Integer.MAX_VALUE;
+				score = evaluation_alpha_beta(c-1, eTemp, alpha, b);
+				if(score < scoreMin) {
+					scoreMin = score;
+				}
+				if(scoreMin <= beta) {
+					return scoreMin;
+				}
+				if(b > scoreMin) {
+					b = scoreMin;
+				}
+			}
+			return scoreMin;
+		}
+	}
+	
 
 	
 	/*
@@ -496,5 +565,6 @@ public class EtatOthello extends Etat{
 		JoueurOthello jTemp = joueurCourant;
 		joueurCourant = joueurSuivant;
 		joueurSuivant = jTemp;
+		fonctionDEvaluation = joueurCourant.fonctionDEvaluation;
 	}
 }
