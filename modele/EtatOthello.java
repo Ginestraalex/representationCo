@@ -77,6 +77,11 @@ public class EtatOthello extends Etat{
 		return 2;
 	}
 	
+	
+	public int getProfondeurRecherche() {
+		return joueurCourant.getProfondeurRecherche();
+	}
+	
 	public int getSize() {
 		return plateauJeu.length;
 	}

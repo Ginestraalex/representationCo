@@ -122,16 +122,53 @@ public class PlateauDeJeu {
 			}
 	    		else if(tableauJoueurs[1].isOrdinateur()){
 	    			if(eval0Choisie.equals("Eval0num1")) {
-						tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
-					}
-					else if(eval0Choisie.equals("Eval0num2")) {
-						tableauJoueurs[1].fonctionDEvaluation = new Eval0num2();
-					}
-					else {
-						//tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
-					}
+					tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
+				}
+				else if(eval0Choisie.equals("Eval0num2")) {
+					tableauJoueurs[1].fonctionDEvaluation = new Eval0num2();
+				}
+				else {
+					//tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+				}
 	    		}
 		}
+    }
+    
+    
+    /*
+     * fonction de definition de la fonction
+     * eval0 sur un joueur J
+     */
+    public void setEval0(JoueurOthello j) {
+    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3"};
+		String eval0Choisie = "Eval0num1";
+		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la fonction eval0 pour "+j.getNom(), "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
+		if(eval0Choisie != null) {
+			if(eval0Choisie.equals("Eval0num1")) {
+				j.fonctionDEvaluation = new Eval0num1();
+			}
+			else if(eval0Choisie.equals("Eval0num2")) {
+				j.fonctionDEvaluation = new Eval0num2();
+			}
+			else {
+				//j.fonctionDEvaluation = new Eval0num3();
+			}
+		}
+    }
+    
+    
+    public void setProfondeurRecherche(JoueurOthello j) {
+    		if(j.isOrdinateur()) {
+    			String[] profondeurPossible = {"0","1","2","3","4","5","6","7","8","9"};
+        		String profondeur = "2";
+        		profondeur = (String) JOptionPane.showInputDialog(null, "Choisissez la profondeur de recherche", "selection profondeur", JOptionPane.QUESTION_MESSAGE, null, profondeurPossible, profondeurPossible[2]);
+        		if(profondeur != null) {
+        			j.setProfondeurRecherche(Integer.parseInt(profondeur));
+        		}
+    		}
+    		else {
+    			JOptionPane.showMessageDialog(null, "Le joueur doit etre un ordinateur");
+    		}
     }
     
     
@@ -144,14 +181,19 @@ public class PlateauDeJeu {
 	    			tableauJoueurs[0].setOrdinateur(true);
 	    			tableauJoueurs[0].setNom("Ordinateur");
 	        		tableauJoueurs[0].fonctionDEvaluation = new Eval0num1();
+	        		tableauJoueurs[0].setProfondeurRecherche(2);
+	        		this.setProfondeurRecherche(tableauJoueurs[0]);
+	        		this.setEval0(tableauJoueurs[0]);
 	    		}
 	    		else {
 	    			tableauJoueurs[1].setOrdinateur(true);
 	    			tableauJoueurs[1].setNom("Ordinateur");
 	        		tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
+	        		tableauJoueurs[1].setProfondeurRecherche(2);
+	        		this.setProfondeurRecherche(tableauJoueurs[1]);
+	        		this.setEval0(tableauJoueurs[1]);
 	    		}
 		}
-		this.setEval0();
     }
     
     /*
@@ -162,9 +204,13 @@ public class PlateauDeJeu {
     		tableauJoueurs[0].setNom("Ordinateur1");
     		tableauJoueurs[0].setOrdinateur(true);
     		tableauJoueurs[0].fonctionDEvaluation = new Eval0num1();
+    		this.setEval0(tableauJoueurs[0]);
+    		this.setProfondeurRecherche(tableauJoueurs[0]);
     		tableauJoueurs[1].setNom("Ordinateur2");
     		tableauJoueurs[1].setOrdinateur(true);
     		tableauJoueurs[1].fonctionDEvaluation = new Eval0num1();
+    		this.setEval0(tableauJoueurs[1]);
+    		this.setProfondeurRecherche(tableauJoueurs[1]);
     		activerMessagesTour = false;
     }
     
@@ -239,7 +285,7 @@ public class PlateauDeJeu {
 		else {
 			if(etat.joueurCourant.isOrdinateur()){
 				long debut = System.currentTimeMillis();	 
-				etat = etat.minmax_avec_elagage(6);
+				etat = etat.minmax_avec_elagage(etat.getProfondeurRecherche());
 				System.out.println("temps de calcul :"+(System.currentTimeMillis()-debut));
 				
 				etat.tourSuivant();
