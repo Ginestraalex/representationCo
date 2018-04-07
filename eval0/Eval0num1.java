@@ -36,4 +36,9 @@ public class Eval0num1 implements Eval0{
 			return e.nbPionsNoirs + bonus;
 		}
 	}
+
+	@Override
+	public String getNom() {
+		return "Eval0num1";
+	}
 }

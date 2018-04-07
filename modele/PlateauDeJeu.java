@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
+import representationCo.eval0.Eval0;
 import representationCo.eval0.Eval0num1;
 import representationCo.eval0.Eval0num2;
+import representationCo.eval0.Eval0num3;
 import representationCo.view.Vue;
 
 public class PlateauDeJeu {
@@ -128,7 +130,7 @@ public class PlateauDeJeu {
 					tableauJoueurs[1].fonctionDEvaluation = new Eval0num2();
 				}
 				else {
-					//tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+					tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
 				}
 	    		}
 		}
@@ -151,7 +153,7 @@ public class PlateauDeJeu {
 				j.fonctionDEvaluation = new Eval0num2();
 			}
 			else {
-				//j.fonctionDEvaluation = new Eval0num3();
+				j.fonctionDEvaluation = new Eval0num3();
 			}
 		}
     }
@@ -212,6 +214,117 @@ public class PlateauDeJeu {
     		this.setEval0(tableauJoueurs[1]);
     		this.setProfondeurRecherche(tableauJoueurs[1]);
     		activerMessagesTour = false;
+    }
+    
+    
+    /*
+     * fonction de comparaison 
+     * de deux fonction eval0
+     */
+    public void comparaisonEval0() {
+    		Eval0 e1 = null;
+		Eval0 e2 = null;
+    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3"};
+		String eval0Choisie = "Eval0num1";
+		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la premiere fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
+		if(eval0Choisie != null) {
+			if(eval0Choisie.equals("Eval0num1")) {
+				e1 = new Eval0num1();
+			}
+			else if(eval0Choisie.equals("Eval0num2")) {
+				e1 = new Eval0num2();
+			}
+			else {
+				e1 = new Eval0num3();
+			}
+		}
+		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la deuxieme fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
+		if(eval0Choisie != null) {
+			if(eval0Choisie.equals("Eval0num1")) {
+				e2 = new Eval0num1();
+			}
+			else if(eval0Choisie.equals("Eval0num2")) {
+				e2 = new Eval0num2();
+			}
+			else {
+				e2 = new Eval0num3();
+			}
+		}
+		String[] profondeurPossible = {"0","1","2","3","4","5","6","7","8","9"};
+		String profondeur = "2";
+		profondeur = (String) JOptionPane.showInputDialog(null, "Choisissez la profondeur de recherche", "selection profondeur", JOptionPane.QUESTION_MESSAGE, null, profondeurPossible, profondeurPossible[2]);
+		
+		if(e1 != null && e2 != null && profondeur != null) {
+			int res = comparaisonEval0(e1,e2, Integer.parseInt(profondeur));
+			if(res == 1) {
+				JOptionPane.showMessageDialog(null, e1.getNom() + " est meilleure que " + e2.getNom());
+			}
+			else if(res == -1) {
+				JOptionPane.showMessageDialog(null, e2.getNom() + " est meilleure que " + e1.getNom());
+			}
+			else {
+				JOptionPane.showMessageDialog(null, e1.getNom() + " est aussi efficace que " + e2.getNom());
+
+			}
+		}
+    }
+    
+    
+    /*
+     * fonction de comparaison entre deux eval0
+     * retourne:
+     * 1 si eval1 est plus performante
+     * -1 si eval2 est plus performante
+     * et 0 si nul
+     */
+    public int comparaisonEval0(Eval0 eval1, Eval0 eval2, int p) {
+    		int score = 0;
+    		int resPartie = 0;
+    		/* premiere partie eval1 commence*/
+    		tableauJoueurs[0].setNom("Ordinateur1");
+		tableauJoueurs[0].setOrdinateur(true);
+		tableauJoueurs[0].fonctionDEvaluation = eval1;
+		tableauJoueurs[0].setProfondeurRecherche(p);
+		tableauJoueurs[1].setNom("Ordinateur2");
+		tableauJoueurs[1].setOrdinateur(true);
+		tableauJoueurs[1].fonctionDEvaluation = eval2;
+		tableauJoueurs[1].setProfondeurRecherche(p);
+		activerMessagesTour = false;
+		nouvellePartie(taillePlateau);
+		resPartie = etat.getNumJoueurVainqueur();
+		if(resPartie == 0) {
+			score  = 1;
+		}
+		else if(resPartie == 1) {
+			score = -1;
+		}
+		
+		/* deuxieme partie eval2 commence */
+		tableauJoueurs[1].setNom("Ordinateur1");
+		tableauJoueurs[1].setOrdinateur(true);
+		tableauJoueurs[1].fonctionDEvaluation = eval1;
+		tableauJoueurs[1].setProfondeurRecherche(p);
+		tableauJoueurs[0].setNom("Ordinateur2");
+		tableauJoueurs[0].setOrdinateur(true);
+		tableauJoueurs[0].fonctionDEvaluation = eval2;
+		tableauJoueurs[0].setProfondeurRecherche(p);
+		activerMessagesTour = false;
+		nouvellePartie(taillePlateau);
+		resPartie = etat.getNumJoueurVainqueur();
+		if(resPartie == 0) {
+			score -= 1;
+		}
+		else if(resPartie == 1) {
+			score += 1;
+		}
+		
+		if(score < 0 ) {
+			score = -1;
+		}
+		else if(score > 0) {
+			score = 1;
+		}
+		return score;
     }
     
     
@@ -589,7 +702,6 @@ public class PlateauDeJeu {
     	 */
   	public String toString(){
   		StringBuilder spb = new StringBuilder();
-  		encadrementJeu(spb);
   		for(int y = 0 ; y < taillePlateau ; y++){
   			spb.append("|");
   			for(int x = 0 ; x < taillePlateau ; x++) {
@@ -598,17 +710,8 @@ public class PlateauDeJeu {
   			spb.append("||");
   			spb.append("\n");
   		}
-  		encadrementJeu(spb);
   		return spb.toString();
   	}
-  	
-  	public StringBuilder encadrementJeu(StringBuilder spb){
-		for(int t = 0 ; t < (taillePlateau*2)+3 ; t++){
-			spb.append("|");
-		}
-		spb.append("\n");
-		return spb;
-	}
 
   	/*
   	 * fonction de mis a jour des vues

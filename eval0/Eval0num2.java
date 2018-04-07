@@ -22,4 +22,9 @@ public class Eval0num2 implements Eval0{
 		}
 	}
 
+	@Override
+	public String getNom() {
+		return "Eval0num2";
+	}
+
 }
