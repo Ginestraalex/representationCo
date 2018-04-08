@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 import representationCo.eval0.Eval0;
+import representationCo.eval0.Eval0Lambda;
 import representationCo.eval0.Eval0num1;
 import representationCo.eval0.Eval0num2;
 import representationCo.eval0.Eval0num3;
@@ -108,7 +109,7 @@ public class PlateauDeJeu {
 		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
 		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui changera sa fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
 		if(nomJoueurARemplacer != null) {
-			String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3"};
+			String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda"};
 			String eval0Choisie = "Eval0num1";
 			eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
 			if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer) && tableauJoueurs[0].isOrdinateur()) {
@@ -118,8 +119,11 @@ public class PlateauDeJeu {
 				else if(eval0Choisie.equals("Eval0num2")) {
 					tableauJoueurs[0].fonctionDEvaluation = new Eval0num2();
 				}
+				else if(eval0Choisie.equals("Eval0num3")){
+					tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+				}
 				else {
-					//tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+					tableauJoueurs[0].fonctionDEvaluation = new Eval0Lambda();
 				}
 			}
 	    		else if(tableauJoueurs[1].isOrdinateur()){
@@ -129,8 +133,11 @@ public class PlateauDeJeu {
 				else if(eval0Choisie.equals("Eval0num2")) {
 					tableauJoueurs[1].fonctionDEvaluation = new Eval0num2();
 				}
+				else if(eval0Choisie.equals("Eval0num3")){
+					tableauJoueurs[1].fonctionDEvaluation = new Eval0num3();
+				}
 				else {
-					tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
+					tableauJoueurs[1].fonctionDEvaluation = new Eval0Lambda();
 				}
 	    		}
 		}
@@ -142,7 +149,7 @@ public class PlateauDeJeu {
      * eval0 sur un joueur J
      */
     public void setEval0(JoueurOthello j) {
-    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3"};
+    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda"};
 		String eval0Choisie = "Eval0num1";
 		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la fonction eval0 pour "+j.getNom(), "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
 		if(eval0Choisie != null) {
@@ -152,8 +159,11 @@ public class PlateauDeJeu {
 			else if(eval0Choisie.equals("Eval0num2")) {
 				j.fonctionDEvaluation = new Eval0num2();
 			}
-			else {
+			else if(eval0Choisie.equals("Eval0num3")){
 				j.fonctionDEvaluation = new Eval0num3();
+			}
+			else {
+				j.fonctionDEvaluation = new Eval0Lambda();
 			}
 		}
     }
@@ -224,7 +234,7 @@ public class PlateauDeJeu {
     public void comparaisonEval0() {
     		Eval0 e1 = null;
 		Eval0 e2 = null;
-    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3"};
+    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda"};
 		String eval0Choisie = "Eval0num1";
 		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la premiere fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
 		if(eval0Choisie != null) {
@@ -234,8 +244,11 @@ public class PlateauDeJeu {
 			else if(eval0Choisie.equals("Eval0num2")) {
 				e1 = new Eval0num2();
 			}
-			else {
+			else if(eval0Choisie.equals("Eval0num3")){
 				e1 = new Eval0num3();
+			}
+			else {
+				e1 = new Eval0Lambda();
 			}
 		}
 		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la deuxieme fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
@@ -246,8 +259,11 @@ public class PlateauDeJeu {
 			else if(eval0Choisie.equals("Eval0num2")) {
 				e2 = new Eval0num2();
 			}
-			else {
+			else if(eval0Choisie.equals("Eval0num3")){
 				e2 = new Eval0num3();
+			}
+			else {
+				e2 = new Eval0Lambda();
 			}
 		}
 		String[] profondeurPossible = {"0","1","2","3","4","5","6","7","8","9"};
@@ -676,6 +692,7 @@ public class PlateauDeJeu {
 
 	    	etat.calculJouabilite();	    	
 		JOptionPane.showMessageDialog(null, "C'est au tour de "+etat.joueurCourant.getNom());
+		maj();
 	    	
 	    	if(etat.joueurCourant.isOrdinateur()) {
 	    		etat = etat.minimax(0);

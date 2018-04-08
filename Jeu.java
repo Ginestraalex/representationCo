@@ -9,6 +9,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import representationCo.view.VueJeu;
+import representationCo.eval0.Lambda;
 import representationCo.menu.MenuBar;
 import representationCo.modele.EtatOthello;
 import representationCo.modele.JoueurOthello;
@@ -34,9 +35,11 @@ public class Jeu extends JFrame{
 		VueJeu vuePlateau = new VueJeu(modele);
 		MenuBar menu = new MenuBar(modele);
 		this.setJMenuBar(menu);
+		Lambda lambda = new Lambda(modele);
 		
 		modele.ajouterVue(vuePlateau);
 		modele.ajouterVue(menu);
+		modele.ajouterVue(lambda);
 		
 		this.getContentPane().add(vuePlateau);
 		this.add(vuePlateau,BorderLayout.CENTER);
