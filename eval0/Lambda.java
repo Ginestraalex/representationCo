@@ -115,6 +115,23 @@ public class Lambda implements Vue{
 	public static void restaurerLambdaEvolutive() {
 		
 	}
+	
+	/*
+	 * verrifie que les deux lambda sont differents
+	 */
+	public static boolean lesLambdaSontDifferents() {
+		boolean res = false;
+		if(tab.length == tabEvolue.length) {
+			for(int i = 0 ; i < tab.length ; i++) {
+				for(int j = 0 ; j < tab.length ; j++) {
+					if(tab[i][j] != tabEvolue[i][j]) {
+						res = true;
+					}
+				}
+			}
+		}
+		return res;
+	}
 
 	/*
 	 * fonction d'affichage de lambda basique

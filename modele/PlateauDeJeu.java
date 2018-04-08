@@ -363,7 +363,7 @@ public class PlateauDeJeu {
      * lorsque nombreDeFoisLance >= 5, on abandonne la mutation
      */
     public void evolutionEval0(int nombreDeFoisLancee) {
-    		if(nombreDeFoisLancee < 5) {
+    		if(nombreDeFoisLancee < 5 && Lambda.lesLambdaSontDifferents()) {
     			Eval0 e1 = new Eval0Lambda();
     			Eval0 e2 = new Eval0LambdaEvolutif();
     			int profondeur = 4;
