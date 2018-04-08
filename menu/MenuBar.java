@@ -119,7 +119,7 @@ public class MenuBar extends JMenuBar implements Vue{
 		faireEvoluerEval0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Lambda.modifAlea();
-				modele.evolutionEval0();
+				modele.evolutionEval0(0);
 			}	
 		});
 		

@@ -359,20 +359,32 @@ public class PlateauDeJeu {
     /*
      * fonction permettant l'evolution
      * de la fonction Eval0LambdaEvolutive
+     * nombreDeFoisLancee est le nombre d'evolution sans succes
+     * lorsque nombreDeFoisLance >= 5, on abandonne la mutation
      */
-    public void evolutionEval0() {
-    		Eval0 e1 = new Eval0Lambda();
-		Eval0 e2 = new Eval0LambdaEvolutif();
-		int profondeur = 4;
-		int res = 0;
-		while(res == 0) {
-			res = comparaisonEval0(e1, e2, profondeur);
-			profondeur++;
-		}
-		if(res == -1) {
-			Lambda.remplacerLamdbaBasique();
-		}
-		
+    public void evolutionEval0(int nombreDeFoisLancee) {
+    		if(nombreDeFoisLancee < 5) {
+    			Eval0 e1 = new Eval0Lambda();
+    			Eval0 e2 = new Eval0LambdaEvolutif();
+    			int profondeur = 4;
+    			int res = 0;
+    			while(res == 0) {
+    				res = comparaisonEval0(e1, e2, profondeur);
+    				profondeur++;
+    			}
+    			if(res == -1) {
+    				Lambda.remplacerLamdbaBasique();
+    			}
+    			else {
+    				Lambda.modifAlea();
+    				evolutionEval0(nombreDeFoisLancee++);
+    			}
+    		}
+    		else {
+    			Lambda.restaurerLambdaEvolutive();
+    			JOptionPane.showInternalMessageDialog(null, "La mutation a echoue, ré-essayez!");
+    		}
+    		
     }
     
     
