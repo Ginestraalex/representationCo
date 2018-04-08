@@ -6,9 +6,11 @@ import javax.swing.JOptionPane;
 
 import representationCo.eval0.Eval0;
 import representationCo.eval0.Eval0Lambda;
+import representationCo.eval0.Eval0LambdaEvolutif;
 import representationCo.eval0.Eval0num1;
 import representationCo.eval0.Eval0num2;
 import representationCo.eval0.Eval0num3;
+import representationCo.eval0.Lambda;
 import representationCo.view.Vue;
 
 public class PlateauDeJeu {
@@ -109,7 +111,7 @@ public class PlateauDeJeu {
 		String nomJoueurARemplacer = tableauJoueurs[0].getNom();
 		nomJoueurARemplacer = (String)JOptionPane.showInputDialog(null, "Choisissez le joueur qui changera sa fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, joueurPossible, joueurPossible[0]);
 		if(nomJoueurARemplacer != null) {
-			String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda"};
+			String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda","Eval0LambdaEvolutive"};
 			String eval0Choisie = "Eval0num1";
 			eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la fonction eval0", "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
 			if(tableauJoueurs[0].getNom().equals(nomJoueurARemplacer) && tableauJoueurs[0].isOrdinateur()) {
@@ -122,9 +124,13 @@ public class PlateauDeJeu {
 				else if(eval0Choisie.equals("Eval0num3")){
 					tableauJoueurs[0].fonctionDEvaluation = new Eval0num3();
 				}
-				else {
+				else if(eval0Choisie.equals("Eval0Lambda")){
 					tableauJoueurs[0].fonctionDEvaluation = new Eval0Lambda();
 				}
+				else {
+					tableauJoueurs[0].fonctionDEvaluation = new Eval0LambdaEvolutif();
+				}
+				
 			}
 	    		else if(tableauJoueurs[1].isOrdinateur()){
 	    			if(eval0Choisie.equals("Eval0num1")) {
@@ -136,8 +142,11 @@ public class PlateauDeJeu {
 				else if(eval0Choisie.equals("Eval0num3")){
 					tableauJoueurs[1].fonctionDEvaluation = new Eval0num3();
 				}
-				else {
+				else if(eval0Choisie.equals("Eval0Lambda")){
 					tableauJoueurs[1].fonctionDEvaluation = new Eval0Lambda();
+				}
+				else {
+					tableauJoueurs[1].fonctionDEvaluation = new Eval0LambdaEvolutif();
 				}
 	    		}
 		}
@@ -149,7 +158,7 @@ public class PlateauDeJeu {
      * eval0 sur un joueur J
      */
     public void setEval0(JoueurOthello j) {
-    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda"};
+    		String[] eval0possible = {"Eval0num1","Eval0num2","Eval0num3","Eval0Lambda","Eval0LambdaEvolutif"};
 		String eval0Choisie = "Eval0num1";
 		eval0Choisie  = (String)JOptionPane.showInputDialog(null, "Choisissez la fonction eval0 pour "+j.getNom(), "selection algo eval0", JOptionPane.QUESTION_MESSAGE, null, eval0possible, eval0possible[0]);
 		if(eval0Choisie != null) {
@@ -162,8 +171,11 @@ public class PlateauDeJeu {
 			else if(eval0Choisie.equals("Eval0num3")){
 				j.fonctionDEvaluation = new Eval0num3();
 			}
-			else {
+			else if(eval0Choisie.equals("Eval0Lambda")){
 				j.fonctionDEvaluation = new Eval0Lambda();
+			}
+			else {
+				j.fonctionDEvaluation = new Eval0LambdaEvolutif();
 			}
 		}
     }
@@ -341,6 +353,26 @@ public class PlateauDeJeu {
 			score = 1;
 		}
 		return score;
+    }
+    
+    
+    /*
+     * fonction permettant l'evolution
+     * de la fonction Eval0LambdaEvolutive
+     */
+    public void evolutionEval0() {
+    		Eval0 e1 = new Eval0Lambda();
+		Eval0 e2 = new Eval0LambdaEvolutif();
+		int profondeur = 4;
+		int res = 0;
+		while(res == 0) {
+			res = comparaisonEval0(e1, e2, profondeur);
+			profondeur++;
+		}
+		if(res == -1) {
+			Lambda.remplacerLamdbaBasique();
+		}
+		
     }
     
     

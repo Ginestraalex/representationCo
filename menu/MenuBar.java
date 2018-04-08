@@ -8,6 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import representationCo.eval0.Lambda;
 import representationCo.modele.PlateauDeJeu;
 import representationCo.view.Vue;
 
@@ -25,7 +26,7 @@ public class MenuBar extends JMenuBar implements Vue{
 	public JMenuItem activationMessage;
 	public JMenuItem choixEval0;
 	public JMenuItem affrontementEval0;
-
+	public JMenuItem faireEvoluerEval0;
 	
 	
 	public MenuBar(PlateauDeJeu mod) {
@@ -33,6 +34,7 @@ public class MenuBar extends JMenuBar implements Vue{
 		paramPartie = new JMenu("Parametres");
 		joueurs = new JMenu("Joueurs");
 		eval0 = new JMenu("Eval0");
+		
 		ajouterJoueur = new JMenuItem("Ajouter Joueur");
 		nouvellePartie = new JMenuItem("Nouvelle Partie");
 		affichageScore = new JMenuItem("Afficher Score");
@@ -42,6 +44,7 @@ public class MenuBar extends JMenuBar implements Vue{
 		activationMessage.setToolTipText("Permet d'activer/desactiver l'affichage des messages concernant le tour du joueur");
 		choixEval0 = new JMenuItem("Choix eval0");
 		affrontementEval0 = new JMenuItem("Evalutaion meilleure eval0");
+		faireEvoluerEval0 = new JMenuItem("Faire evoluer eval0");
 
 		ajouterJoueur.addActionListener(new ActionListener() {
 			@Override
@@ -113,6 +116,13 @@ public class MenuBar extends JMenuBar implements Vue{
 			}
 		});
 		
+		faireEvoluerEval0.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Lambda.modifAlea();
+				modele.evolutionEval0();
+			}	
+		});
+		
 		joueurs.add(ajouterJoueur);
 		paramPartie.add(nouvellePartie);
 		joueurs.add(jouerContreOrdi);
@@ -121,6 +131,7 @@ public class MenuBar extends JMenuBar implements Vue{
 		paramPartie.add(activationMessage);
 		paramPartie.add(choixEval0);
 		eval0.add(affrontementEval0);
+		eval0.add(faireEvoluerEval0);
 		add(paramPartie);	
 		add(joueurs);
 		add(eval0);

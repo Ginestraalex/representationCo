@@ -36,6 +36,7 @@ public class Jeu extends JFrame{
 		MenuBar menu = new MenuBar(modele);
 		this.setJMenuBar(menu);
 		Lambda lambda = new Lambda(modele);
+		Lambda.initTab(8);
 		
 		modele.ajouterVue(vuePlateau);
 		modele.ajouterVue(menu);
